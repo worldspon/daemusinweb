@@ -1,12 +1,12 @@
 <template>
     <footer>
-        FOOTER LOAD
+        FOOTER
     </footer>
 </template>
 
 <script>
 export default {
-        
+
 }
 </script>
 

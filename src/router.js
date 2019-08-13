@@ -1,4 +1,4 @@
-import main from './component/main.vue';
+import main from './component/main/main.vue';
 import notice from './component/notice.vue';
 import faq from './component/faq.vue';
 import inquery from './component/inquery.vue';
