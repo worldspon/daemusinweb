@@ -27,7 +27,9 @@ export default {
 
 <style scoped>
     #main-page-wrap {
-        max-width: 1600px;
+        max-width: 1660px;
+        padding: 0 60px;
+        box-sizing: border-box;
         margin: 0 auto;
     }
 
@@ -36,5 +38,7 @@ export default {
         justify-content: space-between;
         margin-bottom: 30px;
     }
+
+
 </style>
 

@@ -5,7 +5,7 @@
             <router-link :to="'/' + type">더보기</router-link>
         </div>
         <div :class="type + '-box__content'">
-            <div v-for="(items, index) in resultData" :key="index" :class="type + '-box__content__row'">
+            <div v-for="(items, index) in resultData" :key="index" class="row" :class="type + '-box__content__row'">
                 <router-link :to="'/' + type">{{items.noticeTitle}}</router-link>
                 <span class="date-span">{{items.date}}</span>
             </div>
@@ -82,8 +82,8 @@ export default {
         white-space:nowrap;
     }
 
-    .notice-box__content__row:not(:last-child) {
-        margin-bottom: 30px; 
+    .row:not(:last-child) {
+        margin-bottom: 50px; 
     }
 
     .board-box__title {
@@ -114,9 +114,5 @@ export default {
         overflow:hidden;
         text-overflow:ellipsis;
         white-space:nowrap;
-    }
-
-    .board-box__content__row:not(:last-child) {
-        margin-bottom: 30px; 
     }
 </style>

@@ -23,6 +23,10 @@ export default {
     font-size: 10px;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
   #wrap {
     margin:0 auto;
     max-width: 2560px;
