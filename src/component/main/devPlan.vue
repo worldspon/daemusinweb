@@ -2,12 +2,12 @@
     <section class="dev-plan-section">
         <h1>개발계획</h1>
         <section class="dev-plan-wrap">
-            <img class="arrow dev-plan__left-arrow" src="/assets/image/slide-arrow-left.png" alt="" @click="devPlanMoveLeft">
-            <div class="dev-plan-box" v-for="(item, index) of indexArray" :key="index">
-                <span class="dev-plan__title">{{devPlan[item].title}}</span>
-                <p class="dev-plan__content" style="white-space: pre-line;">{{devPlan[item].content}}</p>
+            <img class="arrow dev-plan__left-arrow" src="/assets/image/slide-arrow-left.png" alt="" @click="minusCount">
+            <div class="dev-plan-box" v-for="index in showCount" :key="index">
+                <span class="dev-plan__title">{{showPlan[index-1].title}}</span>
+                <p class="dev-plan__content" style="white-space: pre-line;">{{showPlan[index-1].content}}</p>
             </div>
-            <img class="arrow dev-plan__right-arrow" src="/assets/image/slide-arrow-right.png" alt="" @click="devPlanMoveRight">
+            <img class="arrow dev-plan__right-arrow" src="/assets/image/slide-arrow-right.png" alt="" @click="plusCount">
         </section>
     </section>
 </template>
@@ -16,68 +16,78 @@
 export default {
     data() {
         return {
-            devPlan: [
-                {
-                    title: '결투장1',
-                    content: `보유하고 있는 장수들을 결투장에\n출전시켜 대결을 벌인다.\n\n간단한 CCG형태의 특징을 가지며\n매일 결투장 순위를 바탕으로 곡옥을\n지급한다.`
-                },
-                {
-                    title: '결투장2',
-                    content: '보유하고 있는 장수들을 결투장에\n출전시켜 대결을 벌인다.\n\n간단한 CCG형태의 특징을 가지며\n매일 결투장 순위를 바탕으로 곡옥을\n지급한다.'
-                },
-                {
-                    title: '결투장3',
-                    content: '보유하고 있는 장수들을 결투장에\n출전시켜 대결을 벌인다.\n\n간단한 CCG형태의 특징을 가지며\n매일 결투장 순위를 바탕으로 곡옥을\n지급한다.'
-                },
-                {
-                    title: '결투장4',
-                    content: '보유하고 있는 장수들을 결투장에\n출전시켜 대결을 벌인다.\n\n간단한 CCG형태의 특징을 가지며\n매일 결투장 순위를 바탕으로 곡옥을\n지급한다.'
-                },
-                {
-                    title: '결투장5',
-                    content: '보유하고 있는 장수들을 결투장에\n출전시켜 대결을 벌인다.\n\n간단한 CCG형태의 특징을 가지며\n매일 결투장 순위를 바탕으로 곡옥을\n지급한다.'
-                },
-                {
-                    title: '결투장6',
-                    content: '보유하고 있는 장수들을 결투장에\n출전시켜 대결을 벌인다.\n\n간단한 CCG형태의 특징을 가지며\n매일 결투장 순위를 바탕으로 곡옥을\n지급한다.'
-                },
-                {
-                    title: '결투장7',
-                    content: '보유하고 있는 장수들을 결투장에\n출전시켜 대결을 벌인다.\n\n간단한 CCG형태의 특징을 가지며\n매일 결투장 순위를 바탕으로 곡옥을\n지급한다.'
-                }
-            ],
-            startIndex: 0,
-            indexArray: [0,1,2,3]
+            devPlan: null,
+            showPlan: null,
+            showCount: null,
+            index: 0,
+            lastIndex: null,
         }
     },
     methods: {
-        devPlanMoveLeft() {
-            this.indexArray = [];
-            this.startIndex > 0 ? this.startIndex-- : this.startIndex = this.devPlan.length-1;
-            let index = this.startIndex;
-
-            for(let i = 0; i < 4; i ++) {
-                if( index < 0 ) {
-                    index = this.devPlan.length-1;
-                }
-                this.indexArray.push(index);
-                index--;
+        axiosDevPlan() {
+            const url = `http://211.192.165.100:3030/main/developmentPlan`;
+        
+            this.$http.get(url).then(response => {
+                this.devPlan = response.data.responseObject.developmentPlan;
+                this.setShowCount();
+                this.lastIndex = this.devPlan.length-1;
+            })
+        },
+        plusCount() {
+            this.index++;
+            if( this.index > this.lastIndex ) {
+                this.index = 0;
             }
         },
-        devPlanMoveRight() {
-            this.indexArray = [];
-            this.startIndex < this.devPlan.length-1 ? this.startIndex++ : this.startIndex = 0;
-            let index = this.startIndex;
-
-            for(let i = 0; i < 4; i ++) {
-                if( index >= this.devPlan.length ) {
-                    index = 0;
+        minusCount() {
+            this.index--;
+            if( this.index < 0 ) {
+                this.index = this.lastIndex;
+            }
+        },
+        setShowCount() {
+            if(window.innerWidth > 1366 ) {
+                this.showCount = 4;
+                this.setShowPlan();
+            } else if( window.innerWidth <= 1366 && window.innerWidth > 1024) {
+                this.showCount = 3;
+                this.setShowPlan();
+            } else if( window.innerWidth <= 1024 && window.innerWidth > 768 ) {
+                this.showCount = 2;
+                this.setShowPlan();
+            } else {
+                this.showCount = 1;
+                this.setShowPlan();
+            }
+        },
+        setShowPlan() {
+            this.showPlan = [];
+            if( this.index + (this.showCount-1) <= this.lastIndex ) {
+                for( let i = this.index; i <= this.index+this.showCount-1; i++) {
+                    this.showPlan.push(this.devPlan[i]);
                 }
-                this.indexArray.push(index);
-                index++;
+            } else if( this.index + (this.showCount-1) > this.lastIndex ) {
+                for( let i = this.index; i <= this.lastIndex; i++) {
+                    this.showPlan.push(this.devPlan[i]);
+                }
+                for( let i = 0; i < (this.index + (this.showCount-1)) - (this.lastIndex); i++ ) {
+                    this.showPlan.push(this.devPlan[i]);
+                }
             }
         }
     },
+    created() {
+        this.axiosDevPlan();
+        window.addEventListener('resize', this.setShowCount)
+    },
+    watch: {
+        devPlan: function() {
+            this.showPlan = this.devPlan.slice(0,this.showCount);
+        },
+        index: function() {
+            this.setShowCount();
+        }
+    }
 }
 </script>
 
@@ -99,26 +109,27 @@ export default {
     }
 
     .arrow {
+        width: 15px;
         position: absolute;
         top: 42%;
         cursor: pointer;
     }
 
     .dev-plan__left-arrow {
-        left: -51px;
+        left: -25px;
     }
 
     .dev-plan__right-arrow {
-        right: -51px;
+        right: -25px;
     }
 
     .dev-plan-box {
-        width: 22.65625%;
+        width: 22.7409%;
         height: 500px;
         box-sizing: border-box;
         padding: 50px 40px;
         background-color: #FFF;
-        box-shadow: 5px 5px 5px rgba(40, 40, 40, .28);;
+        box-shadow: 5px 5px 5px rgba(40, 40, 40, .28);
     }
 
     .dev-plan__title {
@@ -135,5 +146,23 @@ export default {
         line-height: 1.5;
         font-weight: bold;
         color: #888;
+    }
+    
+    @media (max-width: 1366px) {
+        .dev-plan-box {
+            width: 30.8931%;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .dev-plan-box {
+            width: 47.55%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .dev-plan-box {
+            width: 100%;
+        }
     }
 </style>

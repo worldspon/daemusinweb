@@ -34,9 +34,6 @@ export default {
 </script>
 
 <style scoped>
-    .guide-question-section {
-        margin-bottom: 80px;
-    }
 
     img {
         width: 100%;
@@ -46,6 +43,7 @@ export default {
         display: flex;
         justify-content: space-between;
         text-align: center;
+        margin-bottom: 80px;
     }
 
     .guide-question-section > a {
@@ -55,7 +53,21 @@ export default {
 
     .text-area {
         padding: 20px 0;
-        font-size: 2rem;
+        font-size: 1.8rem;
         font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .guide-question-section {
+            flex-flow: column;
+        }
+
+        .guide-question-section > a {
+            width: 100%;
+        }
+
+        .guide-question-section > a:not(:last-child) {
+            margin-bottom: 20px;
+        }
     }
 </style>

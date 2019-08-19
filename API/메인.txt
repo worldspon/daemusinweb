@@ -1,0 +1,74 @@
+[공지사항]
+URL		: http://211.192.165.100:3030/main/notice
+TYPE		: GET 
+응답		: 
+성공 시 응답 - 
+{
+	responseObject: {
+		notice: [
+			{
+				no		: 글 번호
+				noticeTitle	: 공지사항 제목
+				date		: 작성일자
+			}
+		]
+	}, 
+	errorCode	: 에러코드 // 에러코드는 성공 시 무조건 0입니다.
+}
+실패 시 응답 - 
+{
+	errorCode	: 에러코드 // 1: DB 처리 중 문제가 발생
+	message		: 에러에 대한 메시지
+}
+
+
+
+[게시판]
+URL		: http://211.192.165.100:3030/main/board
+TYPE		: GET 
+응답		: 
+성공 시 응답 - 
+{
+	responseObject: {
+		board: [
+			{
+				no		: 글 번호
+				boardTitle	: 게시글 제목
+				date		: 작성일자
+			}
+		]
+	}, 
+	errorCode	: 에러코드 // 에러코드는 성공 시 무조건 0입니다.
+}
+실패 시 응답 - 
+{
+	errorCode	: 에러코드 // 1: DB 처리 중 문제가 발생
+	message		: 에러에 대한 메시지
+}
+
+
+
+[개발 계획]
+URL		: http://211.192.165.100:3030/main/developmentPlan
+TYPE		: GET 
+응답		: 
+성공 시 응답 - 
+{
+	responseObject: {
+		developmentPlan: [
+			{
+				no		: 집계 번호 
+				postId		: 글 번호
+				category	: 분류
+				content		: 내용
+				date		: 작성일자
+			}
+		]
+	}, 
+	errorCode	: 에러코드 // 에러코드는 성공 시 무조건 0입니다.
+}
+실패 시 응답 - 
+{
+	errorCode	: 에러코드 // 1: DB 처리 중 문제가 발생
+	message		: 에러에 대한 메시지
+}

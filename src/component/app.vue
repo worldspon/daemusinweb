@@ -23,6 +23,10 @@ export default {
     font-size: 10px;
   }
 
+  body {
+    overflow-x: hidden;
+  }
+
   * {
     box-sizing: border-box;
   }
@@ -50,5 +54,12 @@ export default {
 
   a {
     color: black;
+  }
+
+  @media (max-width: 1366px) {
+  /* Device = Tablets */
+    html {
+      font-size: 8px;
+    }
   }
 </style>

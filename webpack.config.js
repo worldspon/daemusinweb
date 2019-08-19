@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
-  entry: './src/main.js',
+  entry: ['@babel/polyfill', './src/main.js'],
   module: {
     rules: [
       { test: /\.js$/, use: 'babel-loader' },
@@ -11,6 +11,8 @@ module.exports = {
     ]
   },
   devServer: {
+    host: '172.30.1.16',//your ip address
+    port: 8080,
     contentBase: './src'
   },
   plugins: [
