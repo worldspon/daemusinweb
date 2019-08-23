@@ -1,7 +1,7 @@
 <template>
     <header>
         <nav class="header__nav">
-            <img src="/assets/image/logo.png" alt="logo" class="logo"  @click="moveHome">
+            <img src="src/assets/image/logo.png" alt="logo" class="logo"  @click="moveHome">
             <ul class="header__menu" v-if="windowWidth >= 1366">
                 <li><router-link to="/notice">공지사항</router-link></li>
                 <li><router-link to="/faq">FAQ</router-link></li>
@@ -12,9 +12,9 @@
             <div class="login-box" v-if="windowWidth >= 1366">
                 <span class="login">로그인</span>
             </div>
-            <img class="mobile-menu-button" src="/assets/image/mobile-menu.png" alt="" v-if="windowWidth < 1366" @click="mobileMenuToggle">
+            <img class="mobile-menu-button" src="src/assets/image/mobile-menu.png" alt="" v-if="windowWidth < 1366" @click="mobileMenuToggle">
             <div v-if="showMobileMenu" class="mobile-menu">
-                <img class="mobile-menu-button" src="/assets/image/mobile-menu.png" alt="" @click="mobileMenuToggle">
+                <img class="mobile-menu-button" src="src/assets/image/mobile-menu.png" alt="" @click="mobileMenuToggle">
                 <ul class="mobile-menu-nav">
                     <li><router-link to="/notice">공지사항</router-link></li>
                     <li><router-link to="/faq">FAQ</router-link></li>
@@ -70,7 +70,7 @@ export default {
     .header__nav {
         display: flex;
         max-width: 1660px;
-        padding: 0 60px;
+        padding: 0 30px;
         margin: 0 auto;
         align-items: center;
     }
@@ -118,7 +118,7 @@ export default {
         right: 0;
         height: 100%;
         text-align: right;
-        padding: 37px 60px 20px 60px;
+        padding: 37px 30px 20px 60px;
         z-index: 999;
         background-color: #9e7e49;
     }
