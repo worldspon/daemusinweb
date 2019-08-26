@@ -1,7 +1,7 @@
 <template>
     <div class="notice__header">
         <h1>공지사항</h1>
-        <ul class="notice__category">
+        <ul v-if="currentView === 'noticeList'" class="notice__category">
             <li :class="{on : onClass === 'all'}" data-category='all' @click="categoryClick">전체</li>
             <li :class="{on : onClass === 'notice'}" data-category='notice' @click="categoryClick">공지사항</li>
             <li :class="{on : onClass === 'update'}" data-category='update' @click="categoryClick">업데이트</li>
@@ -12,6 +12,9 @@
 
 <script>
 export default {
+    props: [
+        'propsCurrentView'
+    ],
     methods: {
         categoryClick(e) {
             const category = e.target.dataset.category;
@@ -25,8 +28,14 @@ export default {
     data() {
         return {
             onClass: 'all',
+            currentView: this.propsCurrentView
         }
     },
+    watch: {
+        propsCurrentView() {
+            this.currentView = this.propsCurrentView;
+        }
+    }
 }
 </script>
 

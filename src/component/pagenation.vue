@@ -1,5 +1,5 @@
 <template>
-    <div class="notice__pagenation">
+    <div class="pagenation">
         <ul>
             <img class="pageButton first" @click="moveFirstPage" src="assets/image/page-first.png" alt="">
             <img class="pageButton prev" @click="movePrevPage" src="assets/image/page-prev.png" alt="">
@@ -30,6 +30,11 @@ export default {
         },
         setPageArray() {
             this.pageArray = [];
+
+            if( this.totalPosts <= 0) {
+                return;
+            }
+
             const startPhrase = Math.floor((this.nowPage - 1) / this.phraseSize) * this.phraseSize + 1
             const endPhrase = startPhrase + this.phraseSize - 1;
 
@@ -60,6 +65,7 @@ export default {
 
     },
     created() {
+        this.totalPage = Math.round((this.totalPosts / this.totalContent + 0.49));
         this.setPageArray();
     },
     watch: {
@@ -68,7 +74,6 @@ export default {
             this.totalPage = Math.round((this.totalPosts / this.totalContent + 0.49));
         },
         propsNowPage() {
-            console.log("CH");
             this.nowPage = this.propsNowPage;
         },
         nowPage() {
@@ -82,11 +87,11 @@ export default {
 </script>
 
 <style scoped>
-    .notice__pagenation {
-        padding-top: 20px;
+    .pagenation {
+        padding-top: 10px;
     }
 
-    .notice__pagenation ul {
+    .pagenation ul {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -106,7 +111,7 @@ export default {
         font-weight: bold;
     }
 
-    .notice__pagenation ul li {
+    .pagenation ul li {
         padding: 0px 15px;
         cursor: pointer;
     }

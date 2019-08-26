@@ -6,7 +6,7 @@ import guide from './component/guide.vue';
 import board from './component/board.vue';
 
 export default [
-    { path: '/', component: notice },
+    { path: '/', component: faq },
     { path: '/notice', component: notice },
     { path: '/faq',component: faq },
     { path: '/inquery',component: inquery },
