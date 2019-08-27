@@ -34,9 +34,9 @@ export default {
 <style scoped>
     .search-component {
         display: flex;
+        padding: 10px 0px;
         align-items: center;
         justify-content: center;
-        margin-top: 20px;
         text-align: center;
     }
     .search__select {

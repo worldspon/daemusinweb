@@ -1,0 +1,142 @@
+<template>
+    <div class="faq__list">
+        <searchComponent @searchList="searchList" :propsSearchKeyword="searchKeyword"></searchComponent>
+        <div class="faq__row" v-for="(post, index) of listArray" :key="index">
+            <span class="title" :data-no="post.no" @click="viewFaqContent">Q. {{post.faqTitle}}</span>
+        </div>
+        <div class="button-box">
+            <button class="write-button">글쓰기</button>
+        </div>
+        <pagenation @changePage="changePage" :propsTotalContent="20" :propsTotalPosts="totalPosts" :propsNowPage="pageNum"></pagenation>
+        <div class="inquery-router-box">
+            <span>만족스러운 답변을 찾지 못하셨나요? 1:1 문의를 통해 직접 질문하세요.</span>
+            <button class="inquery-button"><router-link to="/inquery">1:1 문의</router-link></button>
+        </div>
+    </div>
+</template>
+
+<script>
+import searchComponent from '../searchComponent.vue';
+import pagenation from '../pagenation.vue';
+
+export default {
+    components: {
+        searchComponent,
+        pagenation
+    },
+    props: [
+        'propsPageNum',
+        'propsSearchKeyword'
+    ],
+    data() {
+        return {
+            pageNum: this.propsPageNum,
+            searchKeyword: this.propsSearchKeyword,
+            totalPosts: null,
+            listArray: null
+        }
+    },
+    created() {
+        this.axiosList();
+    },
+    methods: {
+        axiosList() {
+            const url = `http://211.192.165.100:3030/faq/list/${this.pageNum-1}/${encodeURIComponent(this.searchKeyword)}`;
+        
+            this.$http.get(url).then(response => {
+                this.totalPosts = response.data.responseObject.totalPosts;
+                this.listArray = response.data.responseObject.faq;
+            })
+        },
+        searchList(searchKeyword) {
+            this.pageNum = 1;
+            this.searchKeyword = searchKeyword;
+            this.axiosList();
+        },
+        changePage(pageNum) {
+            this.pageNum = pageNum;
+            this.axiosList();
+        },
+        viewFaqContent(e) {
+            const pageData = {
+                pageNum: this.pageNum,
+                searchKeyword: this.searchKeyword,
+                contentNum: e.target.dataset.no
+            }
+
+            this.$emit('viewFaqContent', pageData);
+        }
+    },
+}
+</script>
+
+<style scoped>
+
+    .faq__list {
+        width: 100%;
+        padding: 10px 30px;
+        background-color: #fff;
+    }
+
+    .faq__row {
+        display:flex;
+        padding: 30px 0;
+        border-bottom: 1px solid #aaa;
+    }
+
+    .faq__row:nth-child(2) {
+        margin-top: 10px;
+        border-top: 1px solid #888;
+    }
+
+    .title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .date {
+        font-size: 1.2rem;
+    }
+
+    .button-box {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+
+    .write-button {
+        font-size: 1.5rem;
+        padding: 5px 8px;
+        border: none;
+        border-radius: 3px;
+        color: white;
+        background-color: #9e7e49;
+    }
+
+    .inquery-router-box {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .inquery-button {
+        font-size: 1.2rem;
+        margin-left: 5px;
+        padding: 3px 6px;
+        border: 1px solid #888;
+        border-radius: 5px;
+        background-color: transparent;
+    }
+
+    @media (max-width: 568px) {
+        .inquery-router-box {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+        }
+
+        .inquery-button {
+            margin-top: 5px;
+        }
+    }
+</style>

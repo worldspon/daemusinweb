@@ -1,6 +1,6 @@
 <template>
     <div>
-        BOARD
+        inquiry
     </div>
 </template>
 
