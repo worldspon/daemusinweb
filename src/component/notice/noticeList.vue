@@ -13,52 +13,50 @@
         </div>
         <div class="button-box"><button class="write-button">글쓰기</button></div>
 
-        <pagenation @changePage="changePage" :propsTotalContent="20" :propsTotalPosts="totalPosts" :propsNowPage="pageNum"></pagenation>
-        <searchComponent @searchList="searchList" :propsSearchKeyword="searchKeyword"></searchComponent>
+        <pagenation @changePage="changePage"></pagenation>
+        <!-- <searchComponent @searchList="searchList" :propsSearchKeyword="searchKeyword"></searchComponent> -->
     </div>
 </template>
 
 <script>
 import pagenation from '../pagenation.vue';
 import searchComponent from '../searchComponent.vue';
+import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
     components: {
         pagenation,
         searchComponent
     },
-    props: ['propsListArray', 'propsTotalPosts', 'propsPageNum', 'propsSearchKeyword'],
-    data() {
-        return {
-            listArray: this.propsListArray,
-            totalPosts: this.propsTotalPosts,
-            pageNum: this.propsPageNum,
-            searchKeyword: this.propsSearchKeyword
-        }
+    created(){
+        this.axiosNoticeList();
+    },
+    computed: {
+        ...mapState('notice', ['category', 'listArray', 'pageNum', 'totalPost'])
     },
     methods: {
+        ...mapMutations('notice', {
+            changePageNum: 'changePageNum'
+        }),
+        ...mapActions('notice', {
+            axiosNoticeList: 'axiosNoticeList',
+        }),
         noticeContent(e) {
-            this.$emit('noticeContent', e.target.dataset.no);
+            // this.$emit('noticeContent', e.target.dataset.no);
         },
         changePage(pageNum) {
-            this.$emit('changePage', pageNum);
+            this.changePageNum(pageNum);
         },
         searchList(searchKeyword) {
             this.$emit('searchList', searchKeyword);
         }
     },
     watch: {
-        propsListArray() {
-            this.listArray = this.propsListArray;
+        category() {
+            this.axiosNoticeList();
         },
-        propsTotalPosts() {
-            this.totalPosts = this.propsTotalPosts;
-        },
-        propsPageNum() {
-            this.pageNum = this.propsPageNum;
-        },
-        propsSearchKeyword() {
-            this.searchKeyword = this.propsSearchKeyword;
+        pageNum() {
+            this.axiosNoticeList();
         }
     },
 }

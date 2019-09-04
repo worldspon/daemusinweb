@@ -1,8 +1,8 @@
 <template>
     <div class="notice">
-        <noticeHeader :propsCurrentView="currentView" @changeCategory="changeCategory"></noticeHeader>
-        <noticeList v-if="currentView === 'noticeList'" @noticeContent="noticeContent" @changePage="changePage" @searchList="searchList" :propsSearchKeyword="searchKeyword" :propsListArray="listArray" :propsTotalPosts="totalPosts" :propsPageNum="pageNum"></noticeList>
-        <noticeContent v-if="currentView === 'noticeContent'" :propsNoticeObject="noticeObject" @historyBack="historyBack"></noticeContent>
+        <noticeHeader></noticeHeader>
+        <noticeList v-if="currentView === 'noticeList'"></noticeList>
+        <!--<noticeContent v-if="currentView === 'noticeContent'" :propsNoticeObject="noticeObject" @historyBack="historyBack"></noticeContent> -->
     </div>
 </template>
 
@@ -10,6 +10,7 @@
 import noticeHeader from './noticeHeader.vue';
 import noticeList from './noticeList.vue';
 import noticeContent from './noticeContent.vue';
+import {mapState, mapMutations} from 'vuex'
 
 export default {
     components: {
@@ -19,20 +20,21 @@ export default {
     },
     data() {
         return {
-            currentView: 'noticeList',
-            category: 'all',
-            pageNum: 1,
-            searchKeyword: '',
-            listArray: null,
-            totalPosts: null,
-            noticeObject: null
+            noticeObject: null,
         }
     },
     created() {
-        this.axiosList();
-        // this.axiosContent(152)
+        this.setStateReset();
+        this.changeCurrentView('noticeList');
+    },
+    computed: {
+        ...mapState('notice', ['currentView'])
     },
     methods: {
+        ...mapMutations('notice', {
+            setStateReset: 'setStateReset',
+            changeCurrentView: 'changeCurrentView'
+        }),
         changePage(pageNum) {
             this.pageNum = pageNum
             this.axiosList();
@@ -42,27 +44,13 @@ export default {
             this.pageNum = 1;
             this.axiosList();
         },
-        changeCategory(category) {
-            this.category = category;
-            this.pageNum = 1;
-            this.searchKeyword = '';
-            this.axiosList();
-        },
         noticeContent(no) {
             this.currentView = 'noticeContent';
             this.noticeObject = null;
             this.axiosContent(no);
         },
-        axiosList() {
-            const url = `http://211.192.165.100:3030/notice/list/${this.category}/${this.pageNum - 1}/${encodeURI(this.searchKeyword)}`;
-        
-            this.$http.get(url).then(response => {
-                this.totalPosts = response.data.responseObject.totalPosts;
-                this.listArray = response.data.responseObject.notice;
-            })
-        },
         axiosContent(no) {
-            const url = `http://211.192.165.100:3030/notice/read/${no}`;
+            const url = `/notice/read/${no}`;
         
             this.$http.get(url).then(response => {
                 this.noticeObject = response.data.responseObject.notice;

@@ -3,30 +3,33 @@
         <ul>
             <img class="pageButton first" @click="moveFirstPage" src="assets/image/page-first.png" alt="">
             <img class="pageButton prev" @click="movePrevPage" src="assets/image/page-prev.png" alt="">
-            <li :class="{ on : nowPage === page}" v-for="(page, index) of pageArray" :key="index" @click="emitPageNum">{{page}}</li>
-            <img class="pageButton next" @click="moveNextPage" src="assets/image/page-next.png" alt="">
+            <li :class="{ on : pageNum === page}" v-for="(page, index) of pageArray" :key="index" @click="emitChangePage">{{page}}</li>
+            <img class="pageButton next" @click="moveNextPage" src="/assets/image/page-next.png" alt="">
             <img class="pageButton last"  @click="moveLastPage" src="assets/image/page-last.png" alt="">
         </ul>
     </div>
 </template>
 
 <script>
+import {mapState, mapMutations, mapActions} from 'vuex'
+
 export default {
-    props: ['propsTotalPosts', 'propsTotalContent', 'propsNowPage'],
     data() {
         return {
-            totalPosts: this.propsTotalPosts,
-            totalContent: this.propsTotalContent,
-            totalPage: null,
-            nowPage: this.propsNowPage,
+            // totalPosts: this.propsTotalPosts,
+            // totalContent: this.propsTotalContent,
+            // totalPage: null,
+            // nowPage: this.propsNowPage,
             phraseSize: 5,
             pageArray: []
         }
     },
+    computed: {
+        ...mapState('notice', ['pageNum', 'totalPost'])
+    },
     methods: {
-        emitPageNum(e) {
-            this.nowPage = Number(e.target.innerText);
-            this.$emit('changePage', this.nowPage);
+        emitChangePage(e) {
+            this.$emit('changePage', Number(e.target.innerText));
         },
         setPageArray() {
             this.pageArray = [];
@@ -35,7 +38,7 @@ export default {
                 return;
             }
 
-            const startPhrase = Math.floor((this.nowPage - 1) / this.phraseSize) * this.phraseSize + 1
+            const startPhrase = Math.floor((this.pageNum - 1) / this.phraseSize) * this.phraseSize + 1
             const endPhrase = startPhrase + this.phraseSize - 1;
 
             for(let page = startPhrase; page <= endPhrase; page++) {

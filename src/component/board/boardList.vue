@@ -9,17 +9,20 @@
             </div>
         </div>
         <div class="board__row" v-for="(post, index) of listArray" :key="index">
-            <div class="title" @click="boardContent" :data-no="post.no">{{post.boardTitle}}</div>
+            <div class="row__title-box" @click="viewBoardContent" :data-no="post.no">
+                <span class="title">{{post.boardTitle}}</span>
+                <span class="comment-count">[{{post.commentCount}}]</span>
+            </div>
             <div class="row__info">
                 <span class="writer">{{post.writtenBy}}</span>
-                <span class="readcount">{{post.readCount}}</span>
+                <span class="read-count">{{post.readCount}}</span>
                 <span class="date">{{post.date}}</span>
             </div>
         </div>
         <div class="button-box"><button class="write-button">글쓰기</button></div>
-<!-- 
+
         <pagenation @changePage="changePage" :propsTotalContent="20" :propsTotalPosts="totalPosts" :propsNowPage="pageNum"></pagenation>
-        <searchComponent @searchList="searchList" :propsSearchKeyword="searchKeyword"></searchComponent> -->
+        <searchComponent @searchList="searchList" :propsSearchKeyword="searchKeyword"></searchComponent>
     </div>
 </template>
 
@@ -28,10 +31,18 @@ import pagenation from '../pagenation.vue';
 import searchComponent from '../searchComponent.vue';
 
 export default {
+    props: [
+        'propsPageNum',
+        'propsSearchKeyword'
+    ],
+    components: {
+        pagenation,
+        searchComponent
+    },
     data() {
         return {
-            pageNum: 1,
-            searchKeyword: '',
+            pageNum: this.propsPageNum,
+            searchKeyword: this.propsSearchKeyword,
             listArray: null,
             totalPosts: null
         }
@@ -41,16 +52,29 @@ export default {
     },
     methods: {
         axiosList() {
-            const url = `http://211.192.165.100:3030/board/list/${this.pageNum - 1}/${this.searchKeyword}`;
+            const url = `http://211.192.165.100:3030/board/list/${this.pageNum - 1}/${encodeURIComponent(this.searchKeyword)}`;
         
             this.$http.get(url).then(response => {
                 this.totalPosts = response.data.responseObject.totalPosts;
                 this.listArray = response.data.responseObject.board;
-                console.log(this.listArray);
             })
         },
-        boardContent() {
-        
+        changePage(pageNum) {
+            this.pageNum = pageNum;
+            this.axiosList();
+        },
+        searchList(searchKeyword) {
+            this.searchKeyword = searchKeyword;
+            this.pageNum = 1;
+            this.axiosList();
+        },
+        viewBoardContent(e) {
+            const pageData = {
+                pageNum: this.pageNum,
+                searchKeyword: this.searchKeyword,
+                contentNum: e.target.parentNode.dataset.no
+            }
+            this.$emit('viewBoardContent', pageData);
         }
     },
 }
@@ -80,7 +104,21 @@ export default {
         border-bottom: 1px solid #aaa;
     }
 
-    
+    .row__title-box {
+        cursor: pointer;
+    }
+
+    .title {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .comment-count {
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: #666;
+    }
+
     .headline__writer, .writer {
         box-sizing: border-box;
         display: inline-block;
@@ -88,7 +126,7 @@ export default {
         text-align: center;
     }
 
-    .headline__readcount, .readcount{
+    .headline__readcount, .read-count{
         display: inline-block;
         box-sizing: border-box;
         width: 80px;
@@ -102,7 +140,7 @@ export default {
         text-align: center;
     }
 
-    .writer, .readcount, .date {
+    .writer, .read-count, .date {
         font-size: 1.3rem;
     }
 
@@ -119,5 +157,20 @@ export default {
         border-radius: 3px;
         color: white;
         background-color: #9e7e49;
+    }
+
+    @media (max-width: 768px) {
+        .headline__infodata {
+            display: none;
+        }
+
+        .board__row {
+            flex-flow: column;
+        }
+
+        .writer, .read-count, .date {
+            width: auto;
+            margin-top: 5px;
+        }
     }
 </style>

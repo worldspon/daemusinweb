@@ -1,18 +1,40 @@
 <template>
     <div class="board">
         <boardHeader></boardHeader>
-        <boardList></boardList>
+        <boardList v-if="currentView === 'boardList'" @viewBoardContent="viewBoardContent" :propsPageNum="pageNum" :propsSearchKeyword="searchKeyword"></boardList>
+        <boardContent v-if="currentView === 'boardContent'" :propsContentNum="contentNum" @viewBoardList="viewBoardList"></boardContent>
     </div>
 </template>
 
 <script>
 import boardHeader from './boardHeader.vue';
 import boardList from './boardList.vue';
+import boardContent from './boardContent.vue';
 
 export default {
     components: {
         boardHeader,
-        boardList
+        boardList,
+        boardContent
+    },
+    data() {
+        return {
+            currentView: 'boardList',
+            pageNum: 1,
+            searchKeyword: '',
+            contentNum: null
+        }
+    },
+    methods: {
+        viewBoardContent(pageObject) {
+            this.pageNum = pageObject.pageNum;
+            this.searchKeyword = pageObject.searchKeyword;
+            this.contentNum = pageObject.contentNum;
+            this.currentView = 'boardContent';
+        },
+        viewBoardList() {
+            this.currentView = 'boardList';
+        }
     },
 }
 </script>

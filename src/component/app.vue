@@ -1,6 +1,6 @@
 <template>
   <div id="wrap">
-    <Header/>
+    <Header></Header>
     <router-view></router-view>
     <Footer/>
   </div>
@@ -11,10 +11,9 @@ import Header from './header.vue';
 import Footer from './footer.vue';
 
 export default {
-
   components: {
     Header, Footer
-  },
+  }
 };
 </script>
 

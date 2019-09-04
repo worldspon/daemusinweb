@@ -9,7 +9,7 @@
         <div class="button-box">
             <button class="modify-button">수정</button>
             <button class="delete-button">삭제</button>
-            <button class="list-button" @click="viewLastList">목록</button>
+            <button class="list-button" @click="viewFaqList">목록</button>
         </div>
     </div>
 </template>
@@ -36,8 +36,8 @@ export default {
                 this.faqObject = response.data.responseObject.faq;
             })
         },
-        viewLastList() {
-            this.$emit('viewLastList');
+        viewFaqList() {
+            this.$emit('viewFaqList');
         }
     },
 }

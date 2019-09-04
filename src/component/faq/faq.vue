@@ -2,7 +2,7 @@
     <div class="faq">
         <faqHeader></faqHeader>
         <faqList v-if="currentView === 'faqList'" :propsPageNum="pageNum" :propsSearchKeyword="searchKeyword" @viewFaqContent="viewFaqContent"></faqList>
-        <faqContent v-if="currentView === 'faqContent'" :propsContentNum="contentNum" @viewLastList="viewLastList"></faqContent>
+        <faqContent v-if="currentView === 'faqContent'" :propsContentNum="contentNum" @viewFaqList="viewFaqList"></faqContent>
     </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
             this.contentNum = pageData.contentNum;
             this.currentView = 'faqContent'
         },
-        viewLastList() {
+        viewFaqList() {
             this.currentView = 'faqList';
         }
     },

@@ -13,7 +13,16 @@ module.exports = {
   devServer: {
     host: '192.168.0.25',//your ip address
     port: 8080,
-    contentBase: './src'
+    overlay: true,
+    historyApiFallback: true,
+    contentBase: '/src',
+    proxy: {
+      '/': {
+        target: 'http://211.192.165.100:3030',
+        secure: false,
+        changeOrigin : true
+      }
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({

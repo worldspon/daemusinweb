@@ -2,38 +2,28 @@
     <div class="notice__header">
         <h1>공지사항</h1>
         <ul v-if="currentView === 'noticeList'" class="notice__category">
-            <li :class="{on : onClass === 'all'}" data-category='all' @click="categoryClick">전체</li>
-            <li :class="{on : onClass === 'notice'}" data-category='notice' @click="categoryClick">공지사항</li>
-            <li :class="{on : onClass === 'update'}" data-category='update' @click="categoryClick">업데이트</li>
-            <li :class="{on : onClass === 'event'}" data-category='event' @click="categoryClick">이벤트</li>
+            <li :class="{on : category === 'all'}" data-category='all' @click="categoryClick">전체</li>
+            <li :class="{on : category === 'notice'}" data-category='notice' @click="categoryClick">공지사항</li>
+            <li :class="{on : category === 'update'}" data-category='update' @click="categoryClick">업데이트</li>
+            <li :class="{on : category === 'event'}" data-category='event' @click="categoryClick">이벤트</li>
         </ul>
     </div>       
 </template>
 
 <script>
+import {mapState, mapMutations} from 'vuex'
+
 export default {
-    props: [
-        'propsCurrentView'
-    ],
+    computed: {
+        ...mapState('notice', ['category', 'currentView'])
+    },
     methods: {
+        ...mapMutations('notice', {
+            changeCategory: 'changeCategory'
+        }),
         categoryClick(e) {
             const category = e.target.dataset.category;
-            this.changeOnClass(category)
-            this.$emit('changeCategory', category);
-        },
-        changeOnClass(category) {
-            this.onClass = category;
-        },
-    },
-    data() {
-        return {
-            onClass: 'all',
-            currentView: this.propsCurrentView
-        }
-    },
-    watch: {
-        propsCurrentView() {
-            this.currentView = this.propsCurrentView;
+            this.changeCategory(category);
         }
     }
 }
