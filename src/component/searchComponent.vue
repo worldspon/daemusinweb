@@ -10,9 +10,6 @@
 
 <script>
 export default {
-    props: [
-        'propsSearchKeyword'
-    ],
     data() {
         return {
             searchKeyword : this.propsSearchKeyword

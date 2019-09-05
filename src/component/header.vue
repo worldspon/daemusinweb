@@ -18,7 +18,7 @@
             </div>
         </div>
         <nav class="header__nav">
-            <img src="assets/image/logo.png" alt="logo" class="logo">
+            <img src="src/assets/image/logo.png" alt="logo" class="logo">
             <ul class="header__menu" v-if="windowWidth >= 1366">
                 <li><router-link to="/notice">공지사항</router-link></li>
                 <li><router-link to="/faq">FAQ</router-link></li>

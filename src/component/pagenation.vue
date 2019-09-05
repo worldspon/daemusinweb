@@ -1,88 +1,43 @@
 <template>
     <div class="pagenation">
         <ul>
-            <img class="pageButton first" @click="moveFirstPage" src="assets/image/page-first.png" alt="">
-            <img class="pageButton prev" @click="movePrevPage" src="assets/image/page-prev.png" alt="">
-            <li :class="{ on : pageNum === page}" v-for="(page, index) of pageArray" :key="index" @click="emitChangePage">{{page}}</li>
-            <img class="pageButton next" @click="moveNextPage" src="/assets/image/page-next.png" alt="">
-            <img class="pageButton last"  @click="moveLastPage" src="assets/image/page-last.png" alt="">
+            <img class="pageButton first" @click="moveFirstPage" src="src/assets/image/page-first.png" alt="">
+            <img class="pageButton prev" @click="movePrevPhrase" src="src/assets/image/page-prev.png" alt="">
+            <li :class="{ on : pageNum === page}" v-for="(page, index) of pageArray" :key="index" @click="changePageNum">{{page}}</li>
+            <img class="pageButton next" @click="moveNextPhrase" src="src/assets/image/page-next.png" alt="">
+            <img class="pageButton last"  @click="moveLastPage" src="src/assets/image/page-last.png" alt="">
         </ul>
     </div>
 </template>
 
 <script>
-import {mapState, mapMutations, mapActions} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 
 export default {
-    data() {
-        return {
-            // totalPosts: this.propsTotalPosts,
-            // totalContent: this.propsTotalContent,
-            // totalPage: null,
-            // nowPage: this.propsNowPage,
-            phraseSize: 5,
-            pageArray: []
-        }
-    },
     computed: {
-        ...mapState('notice', ['pageNum', 'totalPost'])
+        ...mapState('pagenation', [
+            'pageNum',
+            'phraseSize',
+            'lastPage',
+            'totalPost',
+            'pageArray'
+        ])
     },
     methods: {
-        emitChangePage(e) {
-            this.$emit('changePage', Number(e.target.innerText));
-        },
-        setPageArray() {
-            this.pageArray = [];
-
-            if( this.totalPosts <= 0) {
-                return;
-            }
-
-            const startPhrase = Math.floor((this.pageNum - 1) / this.phraseSize) * this.phraseSize + 1
-            const endPhrase = startPhrase + this.phraseSize - 1;
-
-            for(let page = startPhrase; page <= endPhrase; page++) {
-                this.pageArray.push(page);
-
-                if( page === this.totalPage) {
-                    break;
-                }
-            }
-        },
-        moveFirstPage() {
-            this.nowPage = 1;
-            this.$emit('changePage', this.nowPage);
-        },
-        movePrevPage() {
-            this.nowPage - 5 <= 1 ? this.nowPage = 1 : this.nowPage -= 5;
-            this.$emit('changePage', this.nowPage);
-        },
-        moveNextPage() {
-            this.nowPage + 5 >= this.totalPage ? this.nowPage = this.totalPage : this.nowPage += 5;
-            this.$emit('changePage', this.nowPage);
-        },
-        moveLastPage() {
-            this.nowPage = this.totalPage;
-            this.$emit('changePage', this.nowPage);
-        }
-
+        ...mapMutations('pagenation', [
+            'setPageArray',
+            'changePageNum',
+            'moveFirstPage',
+            'movePrevPhrase',
+            'moveNextPhrase',
+            'moveLastPage'
+        ])
     },
     created() {
-        this.totalPage = Math.round((this.totalPosts / this.totalContent + 0.49));
         this.setPageArray();
     },
     watch: {
-        propsTotalPosts() {
-            this.totalPosts = this.propsTotalPosts;
-            this.totalPage = Math.round((this.totalPosts / this.totalContent + 0.49));
-        },
-        propsNowPage() {
-            this.nowPage = this.propsNowPage;
-        },
-        nowPage() {
-            this.setPageArray();
-        },
-        totalPage() {
+        pageNum() {
             this.setPageArray();
         }
     },

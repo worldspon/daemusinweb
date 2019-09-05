@@ -1,46 +1,42 @@
 <template>
-    <div class="notice__content" v-if="noticeObject !== null">
+    <div class="notice__content" v-if="noticeContentObject !== null">
         <div class="headline">
-            <span class="category">[{{noticeObject.category}}]</span>
+            <span class="category">[{{noticeContentObject.category}}]</span>
             <div class="title-box">
-                <span class="title">{{noticeObject.noticeTitle}}</span>
+                <span class="title">{{noticeContentObject.noticeTitle}}</span>
             </div>
-            <span class="date">{{noticeObject.date}}</span>
+            <span class="date">{{noticeContentObject.date}}</span>
         </div>
         <div class="content">
-            {{noticeObject.noticeContent}}
+            {{noticeContentObject.noticeContent}}
         </div>
         <div class="button-box">
             <button class="modify-button">수정</button>
             <button class="delete-button">삭제</button>
-            <button class="list-button" @click="historyBack">목록</button>
+            <button class="list-button" @click="viewNoticeList">목록</button>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState, mapActions, mapMutations } from 'vuex';
 export default {
-    props: [
-        'propsNoticeObject'
-    ],
-    data() {
-        return {
-            noticeObject: null
-        }
+    computed: {
+        ...mapState('notice', ['noticeContentObject'])
     },
     methods: {
-        historyBack() {
-            this.$emit('historyBack');
+        ...mapMutations('notice', [
+            'setCurrentView'
+        ]),
+        ...mapActions('notice', [
+            'axiosNoticeContent'
+        ]),
+        viewNoticeList() {
+            this.setCurrentView('noticeList');
         }
     },
-    watch: {
-        propsNoticeObject() {
-            this.noticeObject = this.propsNoticeObject;
-            const words = this.noticeObject.date.split(' ');
-            this.noticeObject.date = words[0];
-            this.noticeObject.date += '\n';
-            this.noticeObject.date += words[1];
-        }
+    created() {
+        this.axiosNoticeContent();
     },
 }
 </script>

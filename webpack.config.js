@@ -3,6 +3,10 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
   entry: ['@babel/polyfill', './src/main.js'],
+  output: {
+    // your stuff
+    publicPath: '/'
+  },
   module: {
     rules: [
       { test: /\.js$/, use: 'babel-loader' },
@@ -15,18 +19,17 @@ module.exports = {
     port: 8080,
     overlay: true,
     historyApiFallback: true,
-    contentBase: '/src',
-    proxy: {
-      '/': {
-        target: 'http://211.192.165.100:3030',
-        secure: false,
-        changeOrigin : true
-      }
-    }
+    // proxy: {
+    //   '/': {
+    //     target: 'http://211.192.165.100:3030',
+    //     secure: false,
+    //     changeOrigin : true
+    //   }
+    // }
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: 'src/index.html',
     }),
     new VueLoaderPlugin(),
   ]

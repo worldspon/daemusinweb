@@ -2,7 +2,7 @@
     <div class="notice">
         <noticeHeader></noticeHeader>
         <noticeList v-if="currentView === 'noticeList'"></noticeList>
-        <!--<noticeContent v-if="currentView === 'noticeContent'" :propsNoticeObject="noticeObject" @historyBack="historyBack"></noticeContent> -->
+        <noticeContent v-if="currentView === 'noticeContent'"></noticeContent>
     </div>
 </template>
 
@@ -10,7 +10,7 @@
 import noticeHeader from './noticeHeader.vue';
 import noticeList from './noticeList.vue';
 import noticeContent from './noticeContent.vue';
-import {mapState, mapMutations} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
     components: {
@@ -23,44 +23,22 @@ export default {
             noticeObject: null,
         }
     },
-    created() {
-        this.setStateReset();
-        this.changeCurrentView('noticeList');
-    },
     computed: {
-        ...mapState('notice', ['currentView'])
+        ...mapState('notice', ['currentView', 'category'])
     },
     methods: {
-        ...mapMutations('notice', {
-            setStateReset: 'setStateReset',
-            changeCurrentView: 'changeCurrentView'
-        }),
-        changePage(pageNum) {
-            this.pageNum = pageNum
-            this.axiosList();
-        },
-        searchList(searchKeyword) {
-            this.searchKeyword = searchKeyword;
-            this.pageNum = 1;
-            this.axiosList();
-        },
-        noticeContent(no) {
-            this.currentView = 'noticeContent';
-            this.noticeObject = null;
-            this.axiosContent(no);
-        },
-        axiosContent(no) {
-            const url = `/notice/read/${no}`;
-        
-            this.$http.get(url).then(response => {
-                this.noticeObject = response.data.responseObject.notice;
-            })
-        },
-        historyBack() {
-            this.currentView = 'noticeList';
-            this.axiosList();
-        }
+        ...mapMutations('notice', [
+            'setStateReset',
+            'setCurrentView'
+        ]),
+        ...mapActions('notice', [
+            'axiosNoticeList'
+        ])
     },
+    created() {
+        this.setStateReset();
+        this.setCurrentView('noticeList');
+    }
 }
 </script>
 

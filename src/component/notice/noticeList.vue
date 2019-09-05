@@ -7,54 +7,52 @@
         <div class="notice__row" v-for="(post, index) of listArray" :key="index">
             <div class="notice__headline">
                 <span class="notice__preface">{{post.category}} {{'no.' + post.no}}</span>
-                <span class="title" @click="noticeContent" :data-no="post.no">{{post.noticeTitle}}</span>
+                <span class="title" @click="viewNoticeContent" :data-no="post.no">{{post.noticeTitle}}</span>
             </div>
             <span class="date">{{post.date}}</span>
         </div>
         <div class="button-box"><button class="write-button">글쓰기</button></div>
 
-        <pagenation @changePage="changePage"></pagenation>
-        <!-- <searchComponent @searchList="searchList" :propsSearchKeyword="searchKeyword"></searchComponent> -->
+        <pagenation></pagenation>
+        <searchComponent></searchComponent>
     </div>
 </template>
 
 <script>
 import pagenation from '../pagenation.vue';
 import searchComponent from '../searchComponent.vue';
-import {mapState, mapMutations, mapActions} from 'vuex'
+import {mapState, mapActions, mapMutations} from 'vuex'
 
 export default {
     components: {
         pagenation,
         searchComponent
     },
-    created(){
-        this.axiosNoticeList();
-    },
     computed: {
-        ...mapState('notice', ['category', 'listArray', 'pageNum', 'totalPost'])
+        ...mapState('notice', ['category', 'listArray']),
+        ...mapState('pagenation', ['pageNum'])
     },
     methods: {
-        ...mapMutations('notice', {
-            changePageNum: 'changePageNum'
-        }),
-        ...mapActions('notice', {
-            axiosNoticeList: 'axiosNoticeList',
-        }),
-        noticeContent(e) {
-            // this.$emit('noticeContent', e.target.dataset.no);
-        },
-        changePage(pageNum) {
-            this.changePageNum(pageNum);
+        ...mapMutations('notice', [
+            'setCurrentView',
+            'setContentNo'
+        ]),
+        ...mapActions('notice', [
+            'axiosNoticeList'
+        ]),
+        viewNoticeContent(e) {
+            this.setCurrentView('noticeContent');
+            this.setContentNo(e);
+            // this.$emit('viewNoticeContent', e.target.dataset.no);
         },
         searchList(searchKeyword) {
             this.$emit('searchList', searchKeyword);
         }
     },
+    created(){
+        this.axiosNoticeList();
+    },
     watch: {
-        category() {
-            this.axiosNoticeList();
-        },
         pageNum() {
             this.axiosNoticeList();
         }
