@@ -4,7 +4,6 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 module.exports = {
   entry: ['@babel/polyfill', './src/main.js'],
   output: {
-    // your stuff
     publicPath: '/'
   },
   module: {

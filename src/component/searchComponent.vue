@@ -3,26 +3,32 @@
         <select class="search__select">
             <option value="제목">제목</option>
         </select>
-        <input type="search" class="search" v-model="searchKeyword" @keyup.enter="emitSearch">
-        <button class="search__button" @click="emitSearch"><i class="fas fa-search fa-lg"></i></button>
+        <input type="search" class="search" v-model="keyword" @keyup.enter="searchStart">
+        <button class="search__button" @click="searchStart"><i class="fas fa-search fa-lg"></i></button>
     </div>
 </template>
 
 <script>
+import { mapState, mapActions, mapMutations } from 'vuex'
+
 export default {
     data() {
         return {
-            searchKeyword : this.propsSearchKeyword
+            keyword: ''
         }
     },
+    computed: {
+        ...mapState('search', ['searchKeyword']),
+    },
     methods: {
-        emitSearch() {
-            this.$emit('searchList', this.searchKeyword);
+        ...mapMutations('search', ['setSearchKeyword']),
+        searchStart() {
+            this.setSearchKeyword(this.keyword);
         }
     },
     watch: {
-        propsSearchKeyword() {
-            this.searchKeyword = this.propsSearchKeyword;
+        searchKeyword() {
+            this.keyword = this.searchKeyword;
         }
     },
 }

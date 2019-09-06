@@ -1,7 +1,7 @@
 <template>
     <div class="notice">
         <noticeHeader></noticeHeader>
-        <noticeList v-if="currentView === 'noticeList'"></noticeList>
+        <noticeList v-if="currentView === 'noticeList'" @viewNoticeContent="viewNoticeContent"></noticeList>
         <noticeContent v-if="currentView === 'noticeContent'"></noticeContent>
     </div>
 </template>
@@ -18,27 +18,48 @@ export default {
         noticeList,
         noticeContent
     },
-    data() {
-        return {
-            noticeObject: null,
-        }
-    },
     computed: {
-        ...mapState('notice', ['currentView', 'category'])
+        ...mapState('notice', ['currentView', 'category']),
+        ...mapState('pagenation', ['pageNum']),
+        ...mapState('search', ['searchKeyword'])
     },
     methods: {
         ...mapMutations('notice', [
-            'setStateReset',
-            'setCurrentView'
+            'resetState',
+            'setContentNo'
+        ]),
+        ...mapMutations('paganation', [
+            'resetPageData'
+        ]),
+        ...mapMutations('search', [
+            'resetSearchKeyword'
         ]),
         ...mapActions('notice', [
-            'axiosNoticeList'
-        ])
+            'axiosNoticeList',
+            'axiosNoticeContent'
+        ]),
+        viewNoticeContent(e) {
+            const contentNo = e.target.dataset.no;
+            this.setContentNo(contentNo);
+            this.axiosNoticeContent();
+        }
     },
     created() {
-        this.setStateReset();
-        this.setCurrentView('noticeList');
-    }
+        this.resetState();
+        this.axiosNoticeList();
+    },
+    watch: {
+        pageNum() {
+            this.axiosNoticeList();
+        },
+        category() {
+            this.resetSearchKeyword();
+            this.axiosNoticeList();
+        },
+        searchKeyword() {
+            this.axiosNoticeList();
+        }
+    },
 }
 </script>
 

@@ -21,7 +21,7 @@
 <script>
 import pagenation from '../pagenation.vue';
 import searchComponent from '../searchComponent.vue';
-import {mapState, mapActions, mapMutations} from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     components: {
@@ -30,31 +30,10 @@ export default {
     },
     computed: {
         ...mapState('notice', ['category', 'listArray']),
-        ...mapState('pagenation', ['pageNum'])
     },
     methods: {
-        ...mapMutations('notice', [
-            'setCurrentView',
-            'setContentNo'
-        ]),
-        ...mapActions('notice', [
-            'axiosNoticeList'
-        ]),
         viewNoticeContent(e) {
-            this.setCurrentView('noticeContent');
-            this.setContentNo(e);
-            // this.$emit('viewNoticeContent', e.target.dataset.no);
-        },
-        searchList(searchKeyword) {
-            this.$emit('searchList', searchKeyword);
-        }
-    },
-    created(){
-        this.axiosNoticeList();
-    },
-    watch: {
-        pageNum() {
-            this.axiosNoticeList();
+            this.$emit('viewNoticeContent', e);
         }
     },
 }

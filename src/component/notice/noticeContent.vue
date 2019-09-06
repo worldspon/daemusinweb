@@ -1,5 +1,5 @@
 <template>
-    <div class="notice__content" v-if="noticeContentObject !== null">
+    <div class="notice__content">
         <div class="headline">
             <span class="category">[{{noticeContentObject.category}}]</span>
             <div class="title-box">
@@ -26,17 +26,15 @@ export default {
     },
     methods: {
         ...mapMutations('notice', [
-            'setCurrentView'
-        ]),
-        ...mapActions('notice', [
-            'axiosNoticeContent'
+            'setCurrentView',
+            'resetNoticeContentObject'
         ]),
         viewNoticeList() {
             this.setCurrentView('noticeList');
         }
     },
-    created() {
-        this.axiosNoticeContent();
+    destroyed() {
+        this.resetNoticeContentObject()
     },
 }
 </script>
