@@ -1,10 +1,10 @@
 <template>
-    <div class="faq__content" v-if="faqObject !== null">
+    <div class="faq__content" v-if="faqContentObject !== null">
         <div class="title">
-            <span>{{faqObject.faqTitle}}</span>
+            <span>{{faqContentObject.faqTitle}}</span>
         </div>
         <div class="content">
-            {{faqObject.faqContent}}
+            {{faqContentObject.faqContent}}
         </div>
         <div class="button-box">
             <button class="modify-button">수정</button>
@@ -15,30 +15,23 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapMutations } from 'vuex';
+
 export default {
-    props: [
-        'propsContentNum'
-    ],
-    data() {
-        return {
-            contentNum: this.propsContentNum,
-            faqObject: null
-        }
-    },
-    created() {
-        this.axiosList();
+    computed: {
+        ...mapState('faq', ['faqContentObject'])
     },
     methods: {
-        axiosList() {
-            const url = `http://211.192.165.100:3030/faq/read/${this.contentNum}`;
-
-            this.$http.get(url).then(response => {
-                this.faqObject = response.data.responseObject.faq;
-            })
-        },
+        ...mapMutations('faq', [
+            'setCurrentView',
+            'resetFaqContentObject'
+        ]),
         viewFaqList() {
-            this.$emit('viewFaqList');
+            this.setCurrentView('faqList');
         }
+    },
+    destroyed() {
+        this.resetFaqContentObject()
     },
 }
 </script>

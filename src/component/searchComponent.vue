@@ -24,7 +24,11 @@ export default {
         ...mapMutations('search', ['setSearchKeyword']),
         searchStart() {
             this.setSearchKeyword(this.keyword);
+            this.$emit('searchStart')
         }
+    },
+    created() {
+        this.keyword = this.searchKeyword
     },
     watch: {
         searchKeyword() {

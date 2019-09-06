@@ -1,6 +1,6 @@
 import './assets/css/reset.css';
 import Vue from 'vue';
-import store from './store.js';
+import store from './store/store.js';
 import VueRouter from 'vue-router';
 import routes from './router.js';
 import App from './component/app.vue';

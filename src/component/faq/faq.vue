@@ -1,12 +1,14 @@
 <template>
     <div class="faq">
         <faqHeader></faqHeader>
-        <faqList v-if="currentView === 'faqList'" :propsPageNum="pageNum" :propsSearchKeyword="searchKeyword" @viewFaqContent="viewFaqContent"></faqList>
-        <faqContent v-if="currentView === 'faqContent'" :propsContentNum="contentNum" @viewFaqList="viewFaqList"></faqContent>
+        <faqList v-if="currentView === 'faqList'" @pageClick="pageClick" @searchStart="searchStart" @viewFaqContent="viewFaqContent"></faqList>
+        <faqContent v-if="currentView === 'faqContent'"></faqContent>
     </div>
 </template>
 
 <script>
+import {mapState, mapMutations, mapActions} from 'vuex'
+
 import faqHeader from './faqHeader.vue';
 import faqList from './faqList.vue';
 import faqContent from './faqContent.vue'
@@ -17,24 +19,46 @@ export default {
         faqList,
         faqContent
     },
-    data() {
-        return {
-            currentView: 'faqList',
-            pageNum: 1,
-            searchKeyword: '',
-            contentNum: null
-        }
+    computed: {
+        ...mapState('faq', ['currentView']),
+        ...mapState('pagenation', ['pageNum']),
+        ...mapState('search', ['searchKeyword'])
     },
     methods: {
-        viewFaqContent(pageData) {
-            this.pageNum = pageData.pageNum;
-            this.searchKeyword = pageData.searchKeyword;
-            this.contentNum = pageData.contentNum;
-            this.currentView = 'faqContent'
+        ...mapMutations('faq', [
+            'resetState',
+            'setContentNo'
+        ]),
+        ...mapMutations('pagenation', [
+            'resetPageData'
+        ]),
+        ...mapMutations('search', [
+            'resetSearchKeyword'
+        ]),
+        ...mapActions('faq', [
+            'axiosFaqList',
+            'axiosFaqContent'
+        ]),
+        viewFaqContent(e) {
+            const contentNo = e.target.dataset.no;
+            this.setContentNo(contentNo);
+            this.axiosFaqContent();
         },
-        viewFaqList() {
-            this.currentView = 'faqList';
+        categoryClick(newCategory) {
+            this.setCategory(newCategory);
+            this.axiosFaqList();
+        },
+        pageClick(clickPage) {
+            this.axiosFaqList();
+        },
+        searchStart() {
+            this.resetPageData();
+            this.axiosFaqList();
         }
+    },
+    created() {
+        this.resetState();
+        this.axiosFaqList();
     },
 }
 </script>

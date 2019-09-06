@@ -2,10 +2,10 @@
     <div class="notice__header">
         <h1>공지사항</h1>
         <ul v-if="currentView === 'noticeList'" class="notice__category">
-            <li :class="{on : category === 'all'}" data-category='all' @click="setCategory">전체</li>
-            <li :class="{on : category === 'notice'}" data-category='notice' @click="setCategory">공지사항</li>
-            <li :class="{on : category === 'update'}" data-category='update' @click="setCategory">업데이트</li>
-            <li :class="{on : category === 'event'}" data-category='event' @click="setCategory">이벤트</li>
+            <li :class="{on : category === 'all'}" data-category='all' @click="categoryClick">전체</li>
+            <li :class="{on : category === 'notice'}" data-category='notice' @click="categoryClick">공지사항</li>
+            <li :class="{on : category === 'update'}" data-category='update' @click="categoryClick">업데이트</li>
+            <li :class="{on : category === 'event'}" data-category='event' @click="categoryClick">이벤트</li>
         </ul>
     </div>       
 </template>
@@ -18,9 +18,10 @@ export default {
         ...mapState('notice', ['category', 'currentView'])
     },
     methods: {
-        ...mapMutations('notice', [
-            'setCategory'
-        ])
+        categoryClick(e) {
+            const newCategory = e.target.dataset.category;
+            this.$emit('categoryClick', newCategory);
+        }
     }
 }
 </script>

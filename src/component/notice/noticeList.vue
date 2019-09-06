@@ -13,8 +13,8 @@
         </div>
         <div class="button-box"><button class="write-button">글쓰기</button></div>
 
-        <pagenation></pagenation>
-        <searchComponent></searchComponent>
+        <pagenation @pageClick="pageClick"></pagenation>
+        <searchComponent @searchStart="searchStart"></searchComponent>
     </div>
 </template>
 
@@ -34,6 +34,12 @@ export default {
     methods: {
         viewNoticeContent(e) {
             this.$emit('viewNoticeContent', e);
+        },
+        pageClick() {
+            this.$emit('pageClick');
+        },
+        searchStart() {
+            this.$emit('searchStart');
         }
     },
 }

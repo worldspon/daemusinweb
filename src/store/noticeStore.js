@@ -22,9 +22,9 @@ export default {
         setCurrentView(state, view) {
             state.currentView = view;
         },
-        setCategory(state, e) {
-            const newCategory = e.target.dataset.category;
+        setCategory(state, newCategory) {
             this.commit('pagenation/resetPageData');
+            this.commit('search/resetSearchKeyword');
             state.category = newCategory;
         },
         setListArray(state, listArray) {
@@ -33,7 +33,7 @@ export default {
         setContentNo(state, no) {
             state.contentNo = no;
         },
-        setnoticeContentObject(state, noticeContentObject) {
+        setNoticeContentObject(state, noticeContentObject) {
             state.noticeContentObject = noticeContentObject;
         },
         resetNoticeContentObject(state) {
@@ -54,7 +54,7 @@ export default {
             const url = `http://211.192.165.100:3030/notice/read/${this.state.notice.contentNo}`;
         
             axios.get(url).then(response => {
-                context.commit('setnoticeContentObject', response.data.responseObject.notice);
+                context.commit('setNoticeContentObject', response.data.responseObject.notice);
                 context.commit('setCurrentView', 'noticeContent');
             })
         }

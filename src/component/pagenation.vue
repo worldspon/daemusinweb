@@ -3,7 +3,7 @@
         <ul>
             <img class="pageButton first" @click="moveFirstPage" src="src/assets/image/page-first.png" alt="">
             <img class="pageButton prev" @click="movePrevPhrase" src="src/assets/image/page-prev.png" alt="">
-            <li :class="{ on : pageNum === page}" v-for="(page, index) of pageArray" :key="index" @click="changePageNum">{{page}}</li>
+            <li :class="{ on : pageNum === page}" v-for="(page, index) of pageArray" :key="index" @click="pageClick">{{page}}</li>
             <img class="pageButton next" @click="moveNextPhrase" src="src/assets/image/page-next.png" alt="">
             <img class="pageButton last"  @click="moveLastPage" src="src/assets/image/page-last.png" alt="">
         </ul>
@@ -31,7 +31,12 @@ export default {
             'movePrevPhrase',
             'moveNextPhrase',
             'moveLastPage'
-        ])
+        ]),
+        pageClick(e) {
+            const clickPage = Number(e.target.innerText);
+            this.changePageNum(clickPage);
+            this.$emit('pageClick');
+        }
     },
     created() {
         this.setPageArray();

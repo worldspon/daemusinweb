@@ -1,7 +1,7 @@
 <template>
     <div class="notice">
-        <noticeHeader></noticeHeader>
-        <noticeList v-if="currentView === 'noticeList'" @viewNoticeContent="viewNoticeContent"></noticeList>
+        <noticeHeader @categoryClick="categoryClick"></noticeHeader>
+        <noticeList v-if="currentView === 'noticeList'" @pageClick="pageClick" @searchStart="searchStart" @viewNoticeContent="viewNoticeContent"></noticeList>
         <noticeContent v-if="currentView === 'noticeContent'"></noticeContent>
     </div>
 </template>
@@ -10,7 +10,7 @@
 import noticeHeader from './noticeHeader.vue';
 import noticeList from './noticeList.vue';
 import noticeContent from './noticeContent.vue';
-import {mapState, mapMutations, mapActions} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex';
 
 export default {
     components: {
@@ -26,9 +26,10 @@ export default {
     methods: {
         ...mapMutations('notice', [
             'resetState',
+            'setCategory',
             'setContentNo'
         ]),
-        ...mapMutations('paganation', [
+        ...mapMutations('pagenation', [
             'resetPageData'
         ]),
         ...mapMutations('search', [
@@ -42,23 +43,22 @@ export default {
             const contentNo = e.target.dataset.no;
             this.setContentNo(contentNo);
             this.axiosNoticeContent();
+        },
+        categoryClick(newCategory) {
+            this.setCategory(newCategory);
+            this.axiosNoticeList();
+        },
+        pageClick(clickPage) {
+            this.axiosNoticeList();
+        },
+        searchStart() {
+            this.resetPageData();
+            this.axiosNoticeList();
         }
     },
     created() {
         this.resetState();
         this.axiosNoticeList();
-    },
-    watch: {
-        pageNum() {
-            this.axiosNoticeList();
-        },
-        category() {
-            this.resetSearchKeyword();
-            this.axiosNoticeList();
-        },
-        searchKeyword() {
-            this.axiosNoticeList();
-        }
     },
 }
 </script>

@@ -14,8 +14,8 @@ export default {
             state.lastPage =  null;
             state.totalPosts =  null;
         },
-        changePageNum(state, e) {
-            state.pageNum = Number(e.target.innerText);
+        changePageNum(state, page) {
+            state.pageNum = page;
         },
         setTotalPosts(state, totalPosts) {
             state.totalPosts = totalPosts;
