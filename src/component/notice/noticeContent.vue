@@ -11,8 +11,8 @@
             {{noticeContentObject.noticeContent}}
         </div>
         <div class="button-box">
-            <button class="modify-button">수정</button>
-            <button class="delete-button">삭제</button>
+            <button class="modify-button" v-if="level">수정</button>
+            <button class="delete-button" v-if="level">삭제</button>
             <button class="list-button" @click="viewNoticeList">목록</button>
         </div>
     </div>
@@ -23,6 +23,7 @@ import { mapState, mapActions, mapMutations } from 'vuex';
 
 export default {
     computed: {
+        ...mapState('login', [ 'level' ]),
         ...mapState('notice', ['noticeContentObject'])
     },
     methods: {

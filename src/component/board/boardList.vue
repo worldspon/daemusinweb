@@ -19,62 +19,36 @@
                 <span class="date">{{post.date}}</span>
             </div>
         </div>
-        <div class="button-box"><button class="write-button">글쓰기</button></div>
+        <div class="button-box" v-if="level"><button class="write-button">글쓰기</button></div>
 
-        <pagenation @changePage="changePage" :propsTotalContent="20" :propsTotalPosts="totalPosts" :propsNowPage="pageNum"></pagenation>
-        <searchComponent @searchList="searchList" :propsSearchKeyword="searchKeyword"></searchComponent>
+        <pagenation @pageClick="pageClick"></pagenation>
+        <searchComponent @searchStart="searchStart"></searchComponent>
     </div>
 </template>
 
 <script>
 import pagenation from '../pagenation.vue';
 import searchComponent from '../searchComponent.vue';
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
-    props: [
-        'propsPageNum',
-        'propsSearchKeyword'
-    ],
     components: {
-        pagenation,
-        searchComponent
+        searchComponent,
+        pagenation
     },
-    data() {
-        return {
-            pageNum: this.propsPageNum,
-            searchKeyword: this.propsSearchKeyword,
-            listArray: null,
-            totalPosts: null
-        }
-    },
-    created() {
-        this.axiosList();
+    computed: {
+        ...mapState('login', ['level']),
+        ...mapState('board', ['listArray']),
     },
     methods: {
-        axiosList() {
-            const url = `http://211.192.165.100:3030/board/list/${this.pageNum - 1}/${encodeURIComponent(this.searchKeyword)}`;
-        
-            this.$http.get(url).then(response => {
-                this.totalPosts = response.data.responseObject.totalPosts;
-                this.listArray = response.data.responseObject.board;
-            })
-        },
-        changePage(pageNum) {
-            this.pageNum = pageNum;
-            this.axiosList();
-        },
-        searchList(searchKeyword) {
-            this.searchKeyword = searchKeyword;
-            this.pageNum = 1;
-            this.axiosList();
-        },
         viewBoardContent(e) {
-            const pageData = {
-                pageNum: this.pageNum,
-                searchKeyword: this.searchKeyword,
-                contentNum: e.target.parentNode.dataset.no
-            }
-            this.$emit('viewBoardContent', pageData);
+            this.$emit('viewBoardContent', e);
+        },
+        pageClick() {
+            this.$emit('pageClick');
+        },
+        searchStart() {
+            this.$emit('searchStart');
         }
     },
 }

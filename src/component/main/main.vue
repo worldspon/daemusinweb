@@ -11,13 +11,22 @@
 import noticeBoard from './noticeBoard.vue';
 import guideQuestion from './guideQuestion.vue';
 import devPlan from './devPlan.vue';
+import {mapState, mapMutations, mapActions} from 'vuex';
 
 export default {
   components: {
     noticeBoard,
     guideQuestion,
     devPlan
-  }
+  },
+  methods: {
+    ...mapActions('login', [
+      'axiosLoginCheck'
+    ]),
+  },
+  created() {
+    this.axiosLoginCheck();
+  },
 
 }
 </script>

@@ -24,10 +24,13 @@ export default {
         ...mapState('search', ['searchKeyword'])
     },
     methods: {
+        ...mapActions('login', [
+            'axiosLoginCheck'
+        ]),
         ...mapMutations('notice', [
             'resetState',
             'setCategory',
-            'setContentNo'
+            'setNoticeContentNo'
         ]),
         ...mapMutations('pagenation', [
             'resetPageData'
@@ -41,7 +44,7 @@ export default {
         ]),
         viewNoticeContent(e) {
             const contentNo = e.target.dataset.no;
-            this.setContentNo(contentNo);
+            this.setNoticeContentNo(contentNo);
             this.axiosNoticeContent();
         },
         categoryClick(newCategory) {
@@ -57,6 +60,7 @@ export default {
         }
     },
     created() {
+        this.axiosLoginCheck();
         this.resetState();
         this.axiosNoticeList();
     },

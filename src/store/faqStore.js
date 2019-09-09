@@ -5,7 +5,6 @@ export default {
     state: {
         currentView : '',
         listArray: [],
-        contentNo: null,
         faqContentNo: null,
         faqContentObject: null
     },
@@ -13,8 +12,8 @@ export default {
         resetState(state) {
             state.currentView = '';
             state.listArray = [];
-            state.contentNo = null;
             state.faqContentNo = null;
+            state.faqContentObject = null;
             this.commit('pagenation/resetPageData');
             this.commit('search/resetSearchKeyword');
         },
@@ -24,20 +23,11 @@ export default {
         setListArray(state, listArray) {
             state.listArray = listArray;
         },
-        setContentNo(state, no) {
-            state.contentNo = no;
-        },
         setFaqContentNo(state, faqContentNo) {
             state.faqContentNo = faqContentNo;
         },
-        resetFaqContentNo(state) {
-            state.faqContentNo = null;
-        },
         setFaqContentObject(state, faqContentObject) {
             state.faqContentObject = faqContentObject;
-        },
-        resetFaqContentObject(state) {
-            state.faqContentObject = null;
         }
     },
     actions: {
@@ -52,7 +42,7 @@ export default {
         },
         axiosFaqContent(context) {
             
-            const url = `http://211.192.165.100:3030/faq/read/${this.state.faq.contentNo}`;
+            const url = `http://211.192.165.100:3030/faq/read/${this.state.faq.faqContentNo}`;
         
             axios.get(url).then(response => {
                 context.commit('setFaqContentObject', response.data.responseObject.faq);

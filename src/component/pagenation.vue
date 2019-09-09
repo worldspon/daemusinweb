@@ -1,11 +1,11 @@
 <template>
     <div class="pagenation">
         <ul>
-            <img class="pageButton first" @click="moveFirstPage" src="src/assets/image/page-first.png" alt="">
-            <img class="pageButton prev" @click="movePrevPhrase" src="src/assets/image/page-prev.png" alt="">
+            <img class="pageButton first" @click="first" src="../assets/image/page-first.png" alt="">
+            <img class="pageButton prev" @click="prev" src="../assets/image/page-prev.png" alt="">
             <li :class="{ on : pageNum === page}" v-for="(page, index) of pageArray" :key="index" @click="pageClick">{{page}}</li>
-            <img class="pageButton next" @click="moveNextPhrase" src="src/assets/image/page-next.png" alt="">
-            <img class="pageButton last"  @click="moveLastPage" src="src/assets/image/page-last.png" alt="">
+            <img class="pageButton next" @click="next" src="../assets/image/page-next.png" alt="">
+            <img class="pageButton last"  @click="last" src="../assets/image/page-last.png" alt="">
         </ul>
     </div>
 </template>
@@ -35,6 +35,22 @@ export default {
         pageClick(e) {
             const clickPage = Number(e.target.innerText);
             this.changePageNum(clickPage);
+            this.$emit('pageClick');
+        },
+        first() {
+            this.moveFirstPage();
+            this.$emit('pageClick');
+        },
+        prev() {
+            this.movePrevPhrase();
+            this.$emit('pageClick');
+        },
+        next() {
+            this.moveNextPhrase();
+            this.$emit('pageClick');
+        },
+        last() {
+            this.moveLastPage();
             this.$emit('pageClick');
         }
     },

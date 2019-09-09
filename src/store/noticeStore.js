@@ -6,7 +6,7 @@ export default {
         currentView : '',
         category : 'all',
         listArray: [],
-        contentNo: null,
+        noticeContentNo: null,
         noticeContentObject: null
     },
     mutations: {
@@ -14,7 +14,7 @@ export default {
             state.category = 'all';
             state.currentView = '';
             state.listArray = [];
-            state.contentNo = null;
+            state.noticeContentNo = null;
             state.noticeContentObject = null;
             this.commit('pagenation/resetPageData');
             this.commit('search/resetSearchKeyword');
@@ -30,8 +30,8 @@ export default {
         setListArray(state, listArray) {
             state.listArray = listArray;
         },
-        setContentNo(state, no) {
-            state.contentNo = no;
+        setNoticeContentNo(state, no) {
+            state.noticeContentNo = no;
         },
         setNoticeContentObject(state, noticeContentObject) {
             state.noticeContentObject = noticeContentObject;
@@ -51,7 +51,7 @@ export default {
             })
         },
         axiosNoticeContent(context) {
-            const url = `http://211.192.165.100:3030/notice/read/${this.state.notice.contentNo}`;
+            const url = `http://211.192.165.100:3030/notice/read/${this.state.notice.noticeContentNo}`;
         
             axios.get(url).then(response => {
                 context.commit('setNoticeContentObject', response.data.responseObject.notice);

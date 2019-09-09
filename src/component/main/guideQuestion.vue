@@ -2,7 +2,7 @@
     <section class="guide-question-section">
         <router-link to="/guide">
             <div class="guide">
-                <img src="/assets/image/guide-background.png" alt="">
+                <img src="../../assets/image/guide-background.png" alt="">
                 <div class="text-area">
                     게임가이드 보러가기
                 </div>
@@ -10,7 +10,7 @@
         </router-link>
         <router-link to="/faq">
             <div class="faq">
-                <img src="/assets/image/faq-background.png" alt="">
+                <img src="../../assets/image/faq-background.png" alt="">
                 <div class="text-area">
                     FAQ 보러가기
                 </div>
@@ -18,7 +18,7 @@
         </router-link>
         <router-link to="inquery">
             <div class="question">
-                <img src="/assets/image/question-background.png" alt="">
+                <img src="../../assets/image/question-background.png" alt="">
                 <div class="text-area">
                     1:1문의 보러가기
                 </div>

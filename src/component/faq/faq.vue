@@ -25,9 +25,12 @@ export default {
         ...mapState('search', ['searchKeyword'])
     },
     methods: {
+        ...mapActions('login', [
+            'axiosLoginCheck'
+        ]),
         ...mapMutations('faq', [
             'resetState',
-            'setContentNo'
+            'setFaqContentNo'
         ]),
         ...mapMutations('pagenation', [
             'resetPageData'
@@ -41,12 +44,8 @@ export default {
         ]),
         viewFaqContent(e) {
             const contentNo = e.target.dataset.no;
-            this.setContentNo(contentNo);
+            this.setFaqContentNo(contentNo);
             this.axiosFaqContent();
-        },
-        categoryClick(newCategory) {
-            this.setCategory(newCategory);
-            this.axiosFaqList();
         },
         pageClick(clickPage) {
             this.axiosFaqList();
@@ -57,6 +56,7 @@ export default {
         }
     },
     created() {
+        this.axiosLoginCheck();
         this.resetState();
         this.axiosFaqList();
     },

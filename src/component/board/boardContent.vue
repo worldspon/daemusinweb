@@ -1,59 +1,44 @@
 <template>
-    <div class="board__content" v-if="boardObject !== null">
+    <div class="board__content" v-if="boardContentObject !== null">
         <div class="headline">
             <div class="title-box">
-                <span class="title">{{boardObject.boardTitle}}</span>
+                <span class="title">{{boardContentObject.boardTitle}}</span>
             </div>
             <div class="info-box">
                 <div>
-                    <span>{{boardObject.writtenBy}}</span>
+                    <span>{{boardContentObject.writtenBy}}</span>
                 </div>
                 <div class="info">
-                    <span>조회수 {{boardObject.readCount}}</span>
-                    <span>댓글 {{totalComments}}</span>
+                    <span>조회수 {{boardContentObject.readCount}}</span>
+                    <span>댓글</span>
                 </div>
             </div>
         </div>
         <div class="content">
-            {{boardObject.boardContent}}
+            {{boardContentObject.boardContent}}
         </div>
         <div class="button-box">
-            <button class="modify-button">수정</button>
-            <button class="delete-button">삭제</button>
+            <button class="modify-button" v-if="level">수정</button>
+            <button class="delete-button" v-if="level">삭제</button>
             <button class="list-button" @click="viewBoardList">목록</button>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState, mapActions, mapMutations } from 'vuex';
+
 export default {
-    props: [
-        'propsContentNum'
-    ],
-    data() {
-        return {
-            contentNum: this.propsContentNum,
-            boardObject: null,
-            commentObject: null,
-            totalComments: null
-        }
-    },
-    created() {
-        this.axiosList();
+    computed: {
+        ...mapState('board', ['boardContentObject']),
+        ...mapState('login', ['level'])
     },
     methods: {
-        axiosList() {
-            const url = `http://211.192.165.100:3030/board/read/${this.contentNum}`;
-
-            this.$http.get(url).then(response => {
-                this.boardObject = response.data.responseObject.board;
-                this.commentObject = response.data.responseObject.comment;
-                this.totalComments = response.data.responseObject.totalComments;
-            })
-        },
+        ...mapMutations('board', [
+            'setCurrentView'
+        ]),
         viewBoardList() {
-            console.log('a');
-            this.$emit('viewBoardList');
+            this.setCurrentView('boardList');
         }
     }
 }

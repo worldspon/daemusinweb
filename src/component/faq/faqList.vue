@@ -4,7 +4,7 @@
         <div class="faq__row" v-for="(post, index) of listArray" :key="index">
             <span class="title" :data-no="post.no" @click="viewFaqContent">Q. {{post.faqTitle}}</span>
         </div>
-        <div class="button-box">
+        <div class="button-box" v-if="level">
             <button class="write-button">글쓰기</button>
         </div>
         <pagenation @pageClick="pageClick"></pagenation>
@@ -26,6 +26,7 @@ export default {
         pagenation
     },
     computed: {
+        ...mapState('login', [ 'level' ]),
         ...mapState('faq', ['listArray']),
     },
     methods: {

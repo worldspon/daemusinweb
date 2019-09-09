@@ -2,12 +2,12 @@
     <section class="dev-plan-section">
         <h1>개발계획</h1>
         <section class="dev-plan-wrap">
-            <img class="arrow dev-plan__left-arrow" src="/assets/image/slide-arrow-left.png" alt="" @click="minusCount">
+            <img class="arrow dev-plan__left-arrow" src="../../assets/image/slide-arrow-left.png" alt="" @click="minusCount">
             <div class="dev-plan-box" v-for="index in showCount" :key="index">
                 <span class="dev-plan__title">{{showPlan[index-1].title}}</span>
                 <p class="dev-plan__content" style="white-space: pre-line;">{{showPlan[index-1].content}}</p>
             </div>
-            <img class="arrow dev-plan__right-arrow" src="/assets/image/slide-arrow-right.png" alt="" @click="plusCount">
+            <img class="arrow dev-plan__right-arrow" src="../../assets/image/slide-arrow-right.png" alt="" @click="plusCount">
         </section>
     </section>
 </template>

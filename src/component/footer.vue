@@ -2,7 +2,7 @@
     <footer>
         <div class="footer__content">
             <div class="footer__info-box">
-                <img class="footer__logo" src="assets/image/footer-logo.png" alt="">
+                <img class="footer__logo" src="../assets/image/footer-logo.png" alt="">
                 <div class="footer__info">
                     <p>주소 : 서울특별시 강남구 테헤란로 63길 14, 9층(삼성동, 인화빌딩)</p>
                     <p>이메일 : help@worldspon.com</p><br>
@@ -12,13 +12,13 @@
             <div class="footer__family">
                 <div class="footer__apps">
                     <a href="https://play.google.com/store/apps/details?id=com.coinbank.worldspon&hl=ko" target="_blank">
-                        <img class="footer__app" src="assets/image/app-icon-worldspon.png" alt="">
+                        <img class="footer__app" src="../assets/image/app-icon-worldspon.png" alt="">
                     </a>
                     <a href="https://play.google.com/store/apps/details?id=com.worldspon.minigames" target="_blank">
-                        <img class="footer__app" src="assets/image/app-icon-minigames.png" alt="">
+                        <img class="footer__app" src="../assets/image/app-icon-minigames.png" alt="">
                     </a>
                     <a href="https://play.google.com/store/apps/details?id=com.worldspon.newbigking" target="_blank">
-                        <img class="footer__app" src="assets/image/app-icon-daemusin.png" alt="">
+                        <img class="footer__app" src="../assets/image/app-icon-daemusin.png" alt="">
                     </a>
                 </div>
                 <select class="footer__select" v-model="selected" @change="locationFamilySite">

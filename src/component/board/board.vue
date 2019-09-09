@@ -1,12 +1,14 @@
 <template>
     <div class="board">
         <boardHeader></boardHeader>
-        <boardList v-if="currentView === 'boardList'" @viewBoardContent="viewBoardContent" :propsPageNum="pageNum" :propsSearchKeyword="searchKeyword"></boardList>
-        <boardContent v-if="currentView === 'boardContent'" :propsContentNum="contentNum" @viewBoardList="viewBoardList"></boardContent>
+        <boardList v-if="currentView === 'boardList'" @pageClick="pageClick" @searchStart="searchStart" @viewBoardContent="viewBoardContent"></boardList>
+        <boardContent v-if="currentView === 'boardContent'"></boardContent>
     </div>
 </template>
 
 <script>
+import {mapState, mapMutations, mapActions} from 'vuex'
+
 import boardHeader from './boardHeader.vue';
 import boardList from './boardList.vue';
 import boardContent from './boardContent.vue';
@@ -17,24 +19,46 @@ export default {
         boardList,
         boardContent
     },
-    data() {
-        return {
-            currentView: 'boardList',
-            pageNum: 1,
-            searchKeyword: '',
-            contentNum: null
-        }
+    computed: {
+        ...mapState('board', ['currentView']),
+        ...mapState('pagenation', ['pageNum']),
+        ...mapState('search', ['searchKeyword'])
     },
     methods: {
-        viewBoardContent(pageObject) {
-            this.pageNum = pageObject.pageNum;
-            this.searchKeyword = pageObject.searchKeyword;
-            this.contentNum = pageObject.contentNum;
-            this.currentView = 'boardContent';
+        ...mapActions('login', [
+            'axiosLoginCheck'
+        ]),
+        ...mapMutations('board', [
+            'resetState',
+            'setBoardContentNo'
+        ]),
+        ...mapMutations('pagenation', [
+            'resetPageData'
+        ]),
+        ...mapMutations('search', [
+            'resetSearchKeyword'
+        ]),
+        ...mapActions('board', [
+            'axiosBoardList',
+            'axiosBoardContent'
+        ]),
+        viewBoardContent(e) {
+            const contentNo = e.target.parentNode.dataset.no;
+            this.setBoardContentNo(contentNo);
+            this.axiosBoardContent();
         },
-        viewBoardList() {
-            this.currentView = 'boardList';
+        pageClick(clickPage) {
+            this.axiosBoardList();
+        },
+        searchStart() {
+            this.resetPageData();
+            this.axiosBoardList();
         }
+    },
+    created() {
+        this.axiosLoginCheck();
+        this.resetState();
+        this.axiosBoardList();
     },
 }
 </script>

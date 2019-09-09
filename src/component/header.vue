@@ -6,23 +6,23 @@
                     <span>로그인</span>
                 </div>
                 <div class="id-box">
-                    <input type="text" placeholder="ID" v-model="userId">
+                    <input v-focus type="text" placeholder="ID" v-model="userId">
                 </div>
                 <div class="password-box">
-                    <input type="password" placeholder="PASSWORD" v-model="userPassword">
+                    <input type="password" placeholder="PASSWORD" v-model="userPassword" @keydown.enter="startLogin">
                 </div>
                 <div class="button-box">
-                    <button @click="axiosLogin">로그인</button>
+                    <button @click="startLogin">로그인</button>
                     <button @click="destroyModal">취소</button>
                 </div>
             </div>
         </div>
         <nav class="header__nav">
-            <img src="src/assets/image/logo.png" alt="logo" class="logo">
+            <img src="../assets/image/logo.png" alt="logo" class="logo" @click="moveHome">
             <ul class="header__menu" v-if="windowWidth >= 1366">
                 <li><router-link to="/notice">공지사항</router-link></li>
                 <li><router-link to="/faq">FAQ</router-link></li>
-                <li><router-link to="/inquery">1:1문의</router-link></li>
+                <li><router-link to="/inquiry">1:1문의</router-link></li>
                 <li><router-link to="/guide">게임가이드</router-link></li>
                 <li><router-link to="/board">게시판</router-link></li>
             </ul>
@@ -30,15 +30,15 @@
                 <span class="login" @click="showLoginModal" v-if="!loginState">로그인</span>
                 <span class="login" @click="axiosLogout" v-if="loginState">로그아웃</span>
             </div>
-            <img class="mobile-menu-button" src="assets/image/mobile-menu.png" alt="" v-if="windowWidth < 1366" @click="mobileMenuToggle">
+            <img class="mobile-menu-button" src="../assets/image/mobile-menu.png" alt="" v-if="windowWidth < 1366" @click="mobileMenuToggle">
             <div v-if="showMobileMenu" class="mobile-menu">
-                <img class="mobile-menu-button" src="assets/image/mobile-menu.png" alt="" @click="mobileMenuToggle">
+                <img class="mobile-menu-button" src="../assets/image/mobile-menu.png" alt="" @click="mobileMenuToggle">
                 <ul class="mobile-menu-nav">
                     <li @click="showLoginModal" v-if="!loginState">로그인</li>
-                    <li @click="showLoginModal" v-if="loginState">로그아웃</li>
+                    <li @click="axiosLogout" v-if="loginState">로그아웃</li>
                     <li @click="mobileMenuClick"><router-link to="/notice">공지사항</router-link></li>
                     <li @click="mobileMenuClick"><router-link to="/faq">FAQ</router-link></li>
-                    <li @click="mobileMenuClick"><router-link to="/inquery">1:1문의</router-link></li>
+                    <li @click="mobileMenuClick"><router-link to="/inquiry">1:1문의</router-link></li>
                     <li @click="mobileMenuClick"><router-link to="/guide">게임가이드</router-link></li>
                     <li @click="mobileMenuClick"><router-link to="/board">게시판</router-link></li>
                 </ul>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import {mapState, mapActions, mapMutations} from 'vuex';
 
 export default {
     data() {
@@ -57,10 +58,23 @@ export default {
             modal: false,
             userId: '',
             userPassword: '',
-            loginState: false
         }
     },
+    computed: {
+        ...mapState('login', [
+            'loginState'
+        ])
+    },
     methods: {
+        ...mapMutations('login', [
+            'setUserId',
+            'setUserPassword'
+        ]),
+        ...mapActions('login', [
+            'axiosLogin',
+            'axiosLogout',
+            'axiosLoginCheck'
+        ]),
         moveHome() {
             location.href = 'http://192.168.0.25:8080';
         },
@@ -78,33 +92,35 @@ export default {
             this.showMobileMenu = false;
             this.modal = !this.modal
         },
+        startLogin() {
+            const user = {
+                id: this.userId,
+                password: this.userPassword
+            }
+            this.axiosLogin(user);
+            this.userId = ''
+            this.userPassword = ''
+        },
         destroyModal() {
             this.modal = false;
-        },
-        axiosLogin() {
-            const userData = {
-                user: {
-                    trademark : this.userId,
-                    password : this.userPassword
-                }
-            }
-            this.$http.post('/login', userData)
-            .then(response => {
-                const axiosData = response.data;
-                if( axiosData.errorCode === 0 ) {
-                    this.loginState = true;
-                    this.modal = false;
-                }
-            })
-        },
-        axiosLogout() {
-            this.$http.get('/logout').then(response => {
-                this.loginState = false;
-            })
         }
     },
     mounted() {
         window.addEventListener('resize', this.onResize);
+    },
+    watch: {
+        loginState() {
+            if( this.loginState === true ) {
+                this.modal = false;
+            }
+        }
+    },
+    directives: {
+        focus: {
+            inserted(el) {
+                el.focus()
+            }
+        }
     }
 }
 </script>

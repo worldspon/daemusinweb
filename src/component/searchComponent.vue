@@ -1,7 +1,7 @@
 <template>
     <div class="search-component">
         <select class="search__select">
-            <option value="제목">제목</option>
+            <option value="제목+내용">제목+내용</option>
         </select>
         <input type="search" class="search" v-model="keyword" @keyup.enter="searchStart">
         <button class="search__button" @click="searchStart"><i class="fas fa-search fa-lg"></i></button>

@@ -11,7 +11,7 @@
             </div>
             <span class="date">{{post.date}}</span>
         </div>
-        <div class="button-box"><button class="write-button">글쓰기</button></div>
+        <div class="button-box" v-if="level"><button class="write-button">글쓰기</button></div>
 
         <pagenation @pageClick="pageClick"></pagenation>
         <searchComponent @searchStart="searchStart"></searchComponent>
@@ -21,7 +21,7 @@
 <script>
 import pagenation from '../pagenation.vue';
 import searchComponent from '../searchComponent.vue';
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 export default {
     components: {
@@ -29,6 +29,7 @@ export default {
         searchComponent
     },
     computed: {
+        ...mapState('login', [ 'level' ]),
         ...mapState('notice', ['category', 'listArray']),
     },
     methods: {
@@ -41,7 +42,7 @@ export default {
         searchStart() {
             this.$emit('searchStart');
         }
-    },
+    }
 }
 </script>
 
