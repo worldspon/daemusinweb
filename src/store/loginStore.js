@@ -6,7 +6,7 @@ export default {
         loginState: false,
         userId: '',
         level: false,
-        token: ''
+        token: null
     },
     mutations: {
         setUserId(state, id) {
@@ -15,23 +15,44 @@ export default {
         setUserLevel(state, level) {
             state.level = level;
         },
+        setToken(state) {
+            const cookie = document.cookie;
+            const startIndex = cookie.indexOf('taemuuser') + 10;
+            const endIndex = cookie.indexOf(';', startIndex);
+            state.token = endIndex === -1 ? cookie.slice(startIndex) : cookie.slice(startIndex, endIndex);
+        },
         setLoginState(state, value) {
             state.loginState = value;
         }
     },
+    getters: {
+        getToken() {
+            console.log('get');
+            console.log(document.cookie);
+            // const cookie = document.cookie;
+            // const startIndex = cookie.indexOf('taemuuser') + 10;
+            // const endIndex = cookie.indexOf(';', startIndex);
+            // return endIndex === -1 ? cookie.slice(startIndex) : cookie.slice(startIndex, endIndex);
+            return ;
+        }
+    },
     actions: {
         axiosLoginCheck(context) {
-            console.log('LOGIN CHECK')
             const url = `/token/verify`;
         
             axios.get(url).then(response => {
-                if( response.data.errorCode === 0 ) {
+                const axiosObject = response.data;
+                if( axiosObject.errorCode === 0 ) {
                     context.commit('setLoginState', true);
+                    context.commit('setUserId', axiosObject.responseObject.trademark);
+                    context.commit('setUserLevel', axiosObject.responseObject.level);
+                    context.commit('setToken');
                 } else {
                     document.cookie = 'taemuuser=; expires=Thu, 01 Jan 1999 00:00:10 GMT;'
                     context.commit('setLoginState', false);
                     context.commit('setUserId', '');
                     context.commit('setUserLevel', false);
+                    context.commit('setToken', null);
                 }
             })
         },

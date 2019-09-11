@@ -10,8 +10,7 @@
         </div>
         <div class="board__row" v-for="(post, index) of listArray" :key="index">
             <div class="row__title-box" @click="viewBoardContent" :data-no="post.no">
-                <span class="title">{{post.boardTitle}}</span>
-                <span class="comment-count">[{{post.commentCount}}]</span>
+                <span class="title">{{post.boardTitle}} <span class="comment-count">[{{post.commentCount}}]</span></span>
             </div>
             <div class="row__info">
                 <span class="writer">{{post.writtenBy}}</span>

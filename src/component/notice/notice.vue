@@ -2,7 +2,7 @@
     <div class="notice">
         <noticeHeader @categoryClick="categoryClick"></noticeHeader>
         <noticeList v-if="currentView === 'noticeList'" @pageClick="pageClick" @searchStart="searchStart" @viewNoticeContent="viewNoticeContent"></noticeList>
-        <noticeContent v-if="currentView === 'noticeContent'"></noticeContent>
+        <noticeContent v-if="currentView === 'noticeContent'" @viewNoticeList="viewNoticeList" @createComment="createComment" @modifyComment="modifyComment" @deleteComment="deleteComment"></noticeContent>
     </div>
 </template>
 
@@ -32,6 +32,9 @@ export default {
             'setCategory',
             'setNoticeContentNo'
         ]),
+        ...mapMutations('comment', [
+            'setCommentContent'
+        ]),
         ...mapMutations('pagenation', [
             'resetPageData'
         ]),
@@ -40,16 +43,33 @@ export default {
         ]),
         ...mapActions('notice', [
             'axiosNoticeList',
-            'axiosNoticeContent'
+            'axiosNoticeContent',
+            'axiosNoticeCommentCreate',
+            'axiosNoticeCommentModify',
+            'axiosNoticeCommentDelete'
         ]),
         viewNoticeContent(e) {
             const contentNo = e.target.dataset.no;
             this.setNoticeContentNo(contentNo);
             this.axiosNoticeContent();
         },
+        viewNoticeList() {
+            this.axiosNoticeList();
+        },
         categoryClick(newCategory) {
             this.setCategory(newCategory);
             this.axiosNoticeList();
+        },
+        createComment(comment) {
+            this.setCommentContent(comment);
+            this.axiosNoticeCommentCreate();
+        },
+        modifyComment(comment, modifyTarget) {
+            this.setCommentContent(comment);
+            this.axiosNoticeCommentModify(modifyTarget);
+        },
+        deleteComment(no) {
+            this.axiosNoticeCommentDelete(no);
         },
         pageClick(clickPage) {
             this.axiosNoticeList();
@@ -62,7 +82,8 @@ export default {
     created() {
         this.axiosLoginCheck();
         this.resetState();
-        this.axiosNoticeList();
+        this.axiosNoticeContent();
+        // this.axiosNoticeList();
     },
 }
 </script>

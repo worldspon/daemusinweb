@@ -7,7 +7,7 @@
         <div class="notice__row" v-for="(post, index) of listArray" :key="index">
             <div class="notice__headline">
                 <span class="notice__preface">{{post.category}} {{'no.' + post.no}}</span>
-                <span class="title" @click="viewNoticeContent" :data-no="post.no">{{post.noticeTitle}}</span>
+                <span class="title" @click="viewNoticeContent" :data-no="post.no">{{post.noticeTitle}} <span class="comment-count">[{{post.commentCount}}]</span></span>
             </div>
             <span class="date">{{post.date}}</span>
         </div>
@@ -93,6 +93,12 @@ export default {
         font-size: 1.4rem;
         font-weight: bold;
         cursor: pointer;
+    }
+
+    .comment-count {
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: #666;
     }
 
     .date {

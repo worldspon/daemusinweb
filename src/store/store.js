@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import login from './loginStore.js'
 import pagenation from './pagenationStore.js';
 import search from './searchKeywordStore.js';
+import comment from './commentStore.js';
 import notice from './noticeStore.js';
 import faq from './faqStore.js';
 import board from './boardStore.js';
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     modules: {
         login: login,
         pagenation: pagenation,
+        comment: comment,
         search: search,
         notice: notice,
         faq: faq,

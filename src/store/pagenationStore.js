@@ -2,6 +2,7 @@ export default {
     namespaced : true,
     state: {
         pageNum : 1,
+        commentPageNum: 1,
         lastPage: null,
         maximumPosts: 20,
         phraseSize: 5,
@@ -17,10 +18,16 @@ export default {
         changePageNum(state, page) {
             state.pageNum = page;
         },
+        changeCommentPageNum(state, page) {
+            state.commentPageNum = page;
+        },
         setTotalPosts(state, totalPosts) {
             state.totalPosts = totalPosts;
             this.commit('pagenation/setLastPage');
             this.commit('pagenation/setPageArray');
+        },
+        setMaximunPosts(state, maximumPosts) {
+            state.maximumPosts = maximumPosts;
         },
         setLastPage(state) {
             const lastPage = Math.round((state.totalPosts / state.maximumPosts + 0.49));
