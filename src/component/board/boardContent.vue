@@ -18,27 +18,50 @@
             {{boardContentObject.boardContent}}
         </div>
         <div class="button-box">
-            <button class="modify-button" v-if="level">수정</button>
-            <button class="delete-button" v-if="level">삭제</button>
+            <button class="modify-button" v-if="boardContentObject.writtenBy === userId">수정</button>
+            <button class="delete-button" v-if="boardContentObject.writtenBy === userId">삭제</button>
             <button class="list-button" @click="viewBoardList">목록</button>
         </div>
+        <inputComment type="register" @createComment="createComment" />
+        <commentList @modifyComment="modifyComment" @deleteComment="deleteComment"/>
+        <commentPagenation @commentPageClick="commentPageClick" />
     </div>
 </template>
 
 <script>
+import inputComment from '../inputComment.vue';
+import commentList from '../commentList.vue';
+import commentPagenation from '../commentPagenation.vue'
 import { mapState, mapActions, mapMutations } from 'vuex';
 
 export default {
+    components: {
+        inputComment,
+        commentList,
+        commentPagenation
+    },
     computed: {
         ...mapState('board', ['boardContentObject']),
-        ...mapState('login', ['level'])
+        ...mapState('login', ['userId'])
     },
     methods: {
         ...mapMutations('board', [
             'setCurrentView'
         ]),
         viewBoardList() {
-            this.setCurrentView('boardList');
+            this.$emit('viewBoardList');
+        },
+        createComment(comment) {
+            this.$emit('createComment', comment);
+        },
+        modifyComment(comment, modifyTarget) {
+            this.$emit('modifyComment', comment, modifyTarget);
+        },
+        deleteComment(no) {
+            this.$emit('deleteComment', no);
+        },
+        commentPageClick() {
+            this.$emit('commentPageClick');
         }
     }
 }

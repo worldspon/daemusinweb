@@ -2,7 +2,7 @@
     <div class="notice">
         <noticeHeader @categoryClick="categoryClick"></noticeHeader>
         <noticeList v-if="currentView === 'noticeList'" @pageClick="pageClick" @searchStart="searchStart" @viewNoticeContent="viewNoticeContent"></noticeList>
-        <noticeContent v-if="currentView === 'noticeContent'" @viewNoticeList="viewNoticeList" @createComment="createComment" @modifyComment="modifyComment" @deleteComment="deleteComment"></noticeContent>
+        <noticeContent v-if="currentView === 'noticeContent'" @viewNoticeList="viewNoticeList" @createComment="createComment" @modifyComment="modifyComment" @deleteComment="deleteComment" @commentPageClick="commentPageClick"></noticeContent>
     </div>
 </template>
 
@@ -38,12 +38,16 @@ export default {
         ...mapMutations('pagenation', [
             'resetPageData'
         ]),
+        ...mapMutations('commentPagenation', [
+            'resetCommentPageData'
+        ]),
         ...mapMutations('search', [
             'resetSearchKeyword'
         ]),
         ...mapActions('notice', [
             'axiosNoticeList',
             'axiosNoticeContent',
+            'axiosCommentList',
             'axiosNoticeCommentCreate',
             'axiosNoticeCommentModify',
             'axiosNoticeCommentDelete'
@@ -51,7 +55,9 @@ export default {
         viewNoticeContent(e) {
             const contentNo = e.target.dataset.no;
             this.setNoticeContentNo(contentNo);
+            this.resetCommentPageData();
             this.axiosNoticeContent();
+            this.axiosCommentList();
         },
         viewNoticeList() {
             this.axiosNoticeList();
@@ -69,10 +75,13 @@ export default {
             this.axiosNoticeCommentModify(modifyTarget);
         },
         deleteComment(no) {
-            this.axiosNoticeCommentDelete(no);
+            confirm('정말로 삭제하시겠습니까?') ? this.axiosNoticeCommentDelete(no) : '';
         },
-        pageClick(clickPage) {
+        pageClick() {
             this.axiosNoticeList();
+        },
+        commentPageClick() {
+            this.axiosCommentList();
         },
         searchStart() {
             this.resetPageData();
@@ -82,8 +91,7 @@ export default {
     created() {
         this.axiosLoginCheck();
         this.resetState();
-        this.axiosNoticeContent();
-        // this.axiosNoticeList();
+        this.axiosNoticeList();
     },
 }
 </script>

@@ -1,10 +1,7 @@
-import axios from 'axios'
-
 export default {
     namespaced : true,
     state: {
         commentNo: null,
-        totalComments: null,
         commentObject: null,
         commentContent: '',
         modifyTarget: null

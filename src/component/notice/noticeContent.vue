@@ -17,7 +17,7 @@
         </div>
         <inputComment type="register" @createComment="createComment" />
         <commentList @modifyComment="modifyComment" @deleteComment="deleteComment" />
-        <commentPagenation />
+        <commentPagenation @commentPageClick="commentPageClick" />
     </div>
 </template>
 
@@ -52,6 +52,9 @@ export default {
         },
         deleteComment(no) {
             this.$emit('deleteComment', no);
+        },
+        commentPageClick() {
+            this.$emit('commentPageClick');
         }
     },
     destroyed() {

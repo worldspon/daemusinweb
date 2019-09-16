@@ -11,16 +11,13 @@ export default {
     },
     mutations: {
         resetState(state) {
-            state.currentView = 'noticeContent';
-            state.noticeContentNo = 152;
+            state.category = 'all';
+            state.currentView = '';
+            state.listArray = [];
+            state.noticeContentNo = null;
             state.noticeContentObject = null;
-            // state.category = 'all';
-            // state.currentView = '';
-            // state.listArray = [];
-            // state.noticeContentNo = null;
-            // state.noticeContentObject = null;
-            // this.commit('pagenation/resetPageData');
-            // this.commit('search/resetSearchKeyword');
+            this.commit('pagenation/resetPageData');
+            this.commit('search/resetSearchKeyword');
         },
         setCurrentView(state, view) {
             state.currentView = view;
@@ -34,7 +31,7 @@ export default {
             state.listArray = listArray;
         },
         setNoticeContentNo(state, no) {
-            state.noticeContentNo = no;
+            state.noticeContentNo = parseInt(no);
         },
         setNoticeContentObject(state, noticeContentObject) {
             state.noticeContentObject = noticeContentObject;
@@ -48,7 +45,6 @@ export default {
             const url = `/notice/list/${this.state.notice.category}/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
         
             axios.get(url).then(response => {
-                context.commit('pagenation/setMaximunPosts', 20, { root: true });
                 context.commit('setListArray', response.data.responseObject.notice);
                 context.commit('pagenation/setTotalPosts',response.data.responseObject.totalPosts, { root: true });
                 context.commit('setCurrentView', 'noticeList');
@@ -58,11 +54,16 @@ export default {
             const url = `/notice/read/${this.state.notice.noticeContentNo}`;
         
             axios.get(url).then(response => {
-                context.commit('pagenation/setMaximunPosts', 10, { root: true });
-                context.commit('comment/setCommentObject', response.data.responseObject.comment, { root: true });
                 context.commit('setNoticeContentObject', response.data.responseObject.notice);
-                context.commit('pagenation/setTotalPosts',response.data.responseObject.totalComments, { root: true });
+                context.commit('commentPagenation/setTotalPosts',response.data.responseObject.totalComments, { root: true });
                 context.commit('setCurrentView', 'noticeContent');
+            })
+        },
+        axiosCommentList(context) {
+            const url = `/notice/${this.state.notice.noticeContentNo}/comment/${this.state.commentPagenation.pageNum - 1}`;
+        
+            axios.get(url).then(response => {
+                context.commit('comment/setCommentObject', response.data.responseObject.comment, { root: true });
             })
         },
         axiosNoticeCommentCreate(context) {
@@ -87,6 +88,7 @@ export default {
                 if( response.data.errorCode === 0 ) {
                     alert(response.data.message);
                     context.dispatch('axiosNoticeContent');
+                    context.dispatch('axiosCommentList');
                     context.commit('comment/setCommentContent', '', { root: true });
                 }else {
                     alert(response.data.message);
@@ -112,6 +114,7 @@ export default {
                 if( response.data.errorCode === 0 ) {
                     alert(response.data.message);
                     context.dispatch('axiosNoticeContent');
+                    context.dispatch('axiosCommentList');
                     context.commit('comment/setCommentContent', '', { root: true });
                     context.commit('comment/setModifyTarget', null, { root: true });
                 }else {
@@ -127,7 +130,11 @@ export default {
 
             axios.delete(url).then(response => {
                 if( response.data.errorCode === 0 ) {
+                    alert(response.data.message);
                     context.dispatch('axiosNoticeContent');
+                    context.dispatch('axiosCommentList');
+                } else {
+                    alert(response.data.message);
                 }
             })
         }

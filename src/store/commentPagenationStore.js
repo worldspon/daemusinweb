@@ -3,13 +3,13 @@ export default {
     state: {
         pageNum : 1,
         lastPage: null,
-        maximumPosts: 20,
+        maximumPosts: 10,
         phraseSize: 5,
         totalPosts: null,
         pageArray: []
     },
     mutations: {
-        resetPageData(state) {
+        resetCommentPageData(state) {
             state.pageNum = 1;
             state.lastPage =  null;
             state.totalPosts =  null;
@@ -19,8 +19,8 @@ export default {
         },
         setTotalPosts(state, totalPosts) {
             state.totalPosts = totalPosts;
-            this.commit('pagenation/setLastPage');
-            this.commit('pagenation/setPageArray');
+            this.commit('commentPagenation/setLastPage');
+            this.commit('commentPagenation/setPageArray');
         },
         setMaximunPosts(state, maximumPosts) {
             state.maximumPosts = maximumPosts;

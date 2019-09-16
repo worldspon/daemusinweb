@@ -4,7 +4,6 @@
             <div class="comment-info">
                 <span class="comment-id">{{comment.writtenBy}}</span>
                 <div class="button-box" v-if="userId === comment.writtenBy">
-                    <button v-if="modifyTarget === comment.no" class="comment-modify" :data-no="comment.no">확인</button>
                     <button v-if="modifyTarget === comment.no" class="comment-modify" @click="endModify">취소</button>
                     <button v-if="modifyTarget !== comment.no" class="comment-modify" :data-no="comment.no" @click="startModify">수정</button>
                     <button class="comment-delete" :data-no="comment.no" @click="deleteComment">삭제</button>
@@ -35,9 +34,6 @@ export default {
     methods: {
         ...mapMutations('comment', [
             'setModifyTarget'
-        ]),
-        ...mapActions('notice', [
-            'axiosCommentDelete'
         ]),
         startModify(e) {
             this.setModifyTarget(e.target.dataset.no);

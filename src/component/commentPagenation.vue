@@ -3,7 +3,7 @@
         <ul>
             <img class="pageButton first" @click="first" src="../assets/image/page-first.png" alt="">
             <img class="pageButton prev" @click="prev" src="../assets/image/page-prev.png" alt="">
-            <li :class="{ on : commentPageNum === page}" v-for="(page, index) of pageArray" :key="index" @click="commentPageClick">{{page}}</li>
+            <li :class="{ on : pageNum === page}" v-for="(page, index) of pageArray" :key="index" @click="commentPageClick">{{page}}</li>
             <img class="pageButton next" @click="next" src="../assets/image/page-next.png" alt="">
             <img class="pageButton last"  @click="last" src="../assets/image/page-last.png" alt="">
         </ul>
@@ -15,8 +15,8 @@ import {mapState, mapMutations} from 'vuex'
 
 export default {
     computed: {
-        ...mapState('pagenation', [
-            'commentPageNum',
+        ...mapState('commentPagenation', [
+            'pageNum',
             'phraseSize',
             'lastPage',
             'totalPost',
@@ -24,17 +24,17 @@ export default {
         ])
     },
     methods: {
-        ...mapMutations('pagenation', [
+        ...mapMutations('commentPagenation', [
             'setPageArray',
-            'changeCommentPageNum',
+            'changePageNum',
             'moveFirstPage',
             'movePrevPhrase',
             'moveNextPhrase',
             'moveLastPage'
         ]),
         commentPageClick(e) {
-            const clickPage = Number(e.target.innerText);
-            this.changeCommentPageNum(clickPage);
+            const clickCommentPage = Number(e.target.innerText);
+            this.changePageNum(clickCommentPage);
             this.$emit('commentPageClick');
         },
         first() {

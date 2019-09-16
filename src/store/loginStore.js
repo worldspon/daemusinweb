@@ -25,17 +25,6 @@ export default {
             state.loginState = value;
         }
     },
-    getters: {
-        getToken() {
-            console.log('get');
-            console.log(document.cookie);
-            // const cookie = document.cookie;
-            // const startIndex = cookie.indexOf('taemuuser') + 10;
-            // const endIndex = cookie.indexOf(';', startIndex);
-            // return endIndex === -1 ? cookie.slice(startIndex) : cookie.slice(startIndex, endIndex);
-            return ;
-        }
-    },
     actions: {
         axiosLoginCheck(context) {
             const url = `/token/verify`;

@@ -18,7 +18,9 @@
                 <span class="date">{{post.date}}</span>
             </div>
         </div>
-        <div class="button-box" v-if="level"><button class="write-button">글쓰기</button></div>
+        <div class="button-box">
+            <button class="write-button" @click="viewBoardForm">글쓰기</button>
+        </div>
 
         <pagenation @pageClick="pageClick"></pagenation>
         <searchComponent @searchStart="searchStart"></searchComponent>
@@ -48,6 +50,9 @@ export default {
         },
         searchStart() {
             this.$emit('searchStart');
+        },
+        viewBoardForm() {
+            this.$emit('viewBoardForm');
         }
     },
 }
