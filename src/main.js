@@ -11,6 +11,14 @@ const router = new VueRouter({
     mode: 'history'
 });
 
+// router.beforeEach((to, from, next)=>{
+//     if(to.path === '/inquiry') {
+//         console.log('a');
+//     } else {
+//         next();
+//     }
+// })
+
 Vue.use(VueRouter);
 
 Vue.prototype.$http = Axios;

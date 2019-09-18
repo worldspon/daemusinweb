@@ -7,9 +7,7 @@
             </div>
             <span class="date">{{noticeContentObject.date}}</span>
         </div>
-        <div class="content">
-            {{noticeContentObject.noticeContent}}
-        </div>
+        <div class="content">{{noticeContentObject.noticeContent}}</div>
         <div class="button-box">
             <button class="modify-button" v-if="level">수정</button>
             <button class="delete-button" v-if="level">삭제</button>
@@ -101,7 +99,7 @@ export default {
     }
 
     .content {
-        white-space: pre-line;
+        white-space: pre-wrap;
         font-size: 1.5rem;
         margin-bottom: 10px;
         padding-bottom: 150px;

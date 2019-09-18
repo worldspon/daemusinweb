@@ -2,8 +2,8 @@
     <div class="board">
         <boardHeader></boardHeader>
         <boardList v-if="currentView === 'boardList'" @pageClick="pageClick" @searchStart="searchStart" @viewBoardContent="viewBoardContent" @viewBoardForm="viewBoardForm"></boardList>
-        <boardContent v-if="currentView === 'boardContent'" @viewBoardList="viewBoardList" @createComment="createComment" @modifyComment="modifyComment" @deleteComment="deleteComment" @commentPageClick="commentPageClick"></boardContent>
-        <boardForm v-if="currentView === 'boardForm'"/>
+        <boardContent v-if="currentView === 'boardContent'" @viewBoardList="viewBoardList" @viewBoardForm="viewBoardForm" @deleteContent="deleteContent" @createComment="createComment" @modifyComment="modifyComment" @deleteComment="deleteComment" @commentPageClick="commentPageClick"></boardContent>
+        <boardForm v-if="currentView === 'boardForm'" @viewBoardList="viewBoardList" @writeBoard="writeBoard" @modifyBoard="modifyBoard"/>
     </div>
 </template>
 
@@ -33,7 +33,8 @@ export default {
         ...mapMutations('board', [
             'resetState',
             'setBoardContentNo',
-            'setCurrentView'
+            'setCurrentView',
+            'setFormType'
         ]),
         ...mapMutations('comment', [
             'setCommentContent'
@@ -54,7 +55,10 @@ export default {
             'axiosBoardContent',
             'axiosBoardCommentCreate',
             'axiosBoardCommentModify',
-            'axiosBoardCommentDelete'
+            'axiosBoardCommentDelete',
+            'axiosBoardWrite',
+            'axiosBoardModify',
+            'axiosBoardDelete'
         ]),
         viewBoardContent(e) {
             const contentNo = e.target.parentNode.dataset.no;
@@ -87,15 +91,23 @@ export default {
             this.resetPageData();
             this.axiosBoardList();
         },
-        viewBoardForm() {
+        viewBoardForm(type) {
+            this.setFormType(type);
             this.setCurrentView('boardForm');
+        },
+        writeBoard(writeObject) {
+            this.axiosBoardWrite(writeObject);
+        },
+        modifyBoard(modifyObject) {
+            confirm('정말로 수정하시겠습니까?') ? this.axiosBoardModify(modifyObject) : '';
+        },
+        deleteContent() {
+            confirm('정말로 삭제하시겠습니까?') ? this.axiosBoardDelete() : '';
         }
     },
     created() {
         this.axiosLoginCheck();
         this.resetState();
-        // this.axiosBoardContent();
-        // this.axiosCommentList();
         this.axiosBoardList();
     },
 }

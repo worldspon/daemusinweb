@@ -3,23 +3,22 @@
         <div class="headline">
             <div class="title-box">
                 <span class="title">{{boardContentObject.boardTitle}}</span>
+                <span class="author">작성자 : {{boardContentObject.writtenBy}}</span>
             </div>
             <div class="info-box">
                 <div>
-                    <span>{{boardContentObject.writtenBy}}</span>
+                    <span>{{boardContentObject.date}}</span>
                 </div>
                 <div class="info">
                     <span>조회수 {{boardContentObject.readCount}}</span>
-                    <span>댓글</span>
+                    <span>댓글 {{totalPosts}}</span>
                 </div>
             </div>
         </div>
-        <div class="content">
-            {{boardContentObject.boardContent}}
-        </div>
+        <div class="content">{{boardContentObject.boardContent}}</div>
         <div class="button-box">
-            <button class="modify-button" v-if="boardContentObject.writtenBy === userId">수정</button>
-            <button class="delete-button" v-if="boardContentObject.writtenBy === userId">삭제</button>
+            <button class="modify-button" v-if="boardContentObject.writtenBy === userId" @click="viewBoardForm">수정</button>
+            <button class="delete-button" v-if="boardContentObject.writtenBy === userId" @click="deleteContent">삭제</button>
             <button class="list-button" @click="viewBoardList">목록</button>
         </div>
         <inputComment type="register" @createComment="createComment" />
@@ -42,7 +41,8 @@ export default {
     },
     computed: {
         ...mapState('board', ['boardContentObject']),
-        ...mapState('login', ['userId'])
+        ...mapState('login', ['userId']),
+        ...mapState('commentPagenation', ['totalPosts'])
     },
     methods: {
         ...mapMutations('board', [
@@ -62,6 +62,12 @@ export default {
         },
         commentPageClick() {
             this.$emit('commentPageClick');
+        },
+        viewBoardForm() {
+            this.$emit('viewBoardForm', 'modify');
+        },
+        deleteContent() {
+            this.$emit('deleteContent');
         }
     }
 }
@@ -76,15 +82,25 @@ export default {
 
     .headline {
         display: flex;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         align-items: center;
-        padding-bottom: 30px;
+        padding-bottom: 20px;
         border-bottom: 1px solid #aaa;
     }
 
+    .title-box {
+        display:flex;
+        flex-flow: column;
+    }
+
     .title {
+        display: block;
         font-size: 1.8rem;
         font-weight: bold;
+    }
+
+    .author {
+        margin-top: 10px;
     }
 
     .info-box {
@@ -107,7 +123,7 @@ export default {
     }
 
     .content {
-        white-space: pre-line;
+        white-space: pre-wrap;
         font-size: 1.5rem;
         margin-bottom: 10px;
         padding-bottom: 150px;

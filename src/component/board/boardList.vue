@@ -19,7 +19,8 @@
             </div>
         </div>
         <div class="button-box">
-            <button class="write-button" @click="viewBoardForm">글쓰기</button>
+            <button class="write-button" v-if="userId === ''" @click="alertLogin">글쓰기</button>
+            <button class="write-button" v-else @click="viewBoardForm">글쓰기</button>
         </div>
 
         <pagenation @pageClick="pageClick"></pagenation>
@@ -38,7 +39,7 @@ export default {
         pagenation
     },
     computed: {
-        ...mapState('login', ['level']),
+        ...mapState('login', ['userId']),
         ...mapState('board', ['listArray']),
     },
     methods: {
@@ -52,7 +53,10 @@ export default {
             this.$emit('searchStart');
         },
         viewBoardForm() {
-            this.$emit('viewBoardForm');
+            this.$emit('viewBoardForm', 'create');
+        },
+        alertLogin() {
+            alert('로그인 후 이용해주세요.');
         }
     },
 }

@@ -6,7 +6,8 @@ export default {
         currentView : '',
         listArray: [],
         boardContentNo: null,
-        boardContentObject: null
+        boardContentObject: null,
+        formType: ''
     },
     mutations: {
         resetState(state) {
@@ -28,6 +29,9 @@ export default {
         },
         setBoardContentObject(state, boardContentObject) {
             state.boardContentObject = boardContentObject;
+        },
+        setFormType(state, type) {
+            state.formType = type;
         }
     },
     actions: {
@@ -88,6 +92,10 @@ export default {
         axiosBoardCommentModify(context, commentNo) {
             context.commit('login/setToken', '', { root: true });
             const token = this.state.login.token;
+            if( token === '' ) {
+                alert('로그인 후 이용해주세요');
+                return ;
+            }
 
             const url = `/board/comment/modify/${commentNo}?token=${token}`;
 
@@ -115,6 +123,10 @@ export default {
         axiosBoardCommentDelete(context, no) {
             context.commit('login/setToken', '', { root: true });
             const token = this.state.login.token;
+            if( token === '' ) {
+                alert('로그인 후 이용해주세요');
+                return ;
+            }
 
             const url = `/board/${context.state.boardContentNo}/comment/remove/${no}?token=${token}`;
 
@@ -123,6 +135,66 @@ export default {
                     alert(response.data.message);
                     context.dispatch('axiosBoardContent');
                     context.dispatch('axiosCommentList');
+                } else {
+                    alert(response.data.message);
+                }
+            })
+        },
+        axiosBoardWrite(context, writeObject) {
+            context.commit('login/setToken', '', { root: true });
+            const token = this.state.login.token;
+            if( token === '' ) {
+                alert('로그인 후 이용해주세요');
+                return ;
+            }
+            const url = `/board/create?token=${token}`;
+
+            axios.post(url, writeObject).then(response => {
+                if( response.data.errorCode === 0 ) {
+                    alert('게시글이 작성되었습니다.');
+                    context.commit('setBoardContentNo', response.data.responseObject.no);
+                    context.dispatch('axiosBoardContent');
+                    context.dispatch('axiosCommentList');
+                }else {
+                    alert(response.data.message);
+                }
+            })
+        },
+        axiosBoardModify(context, modifyObject) {
+            context.commit('login/setToken', '', { root: true });
+            const token = this.state.login.token;
+            if( token === '' ) {
+                alert('로그인 후 이용해주세요');
+                return ;
+            }
+
+            const url = `/board/modify/${context.state.boardContentNo}?token=${token}`;
+
+            axios.patch(url, modifyObject).then(response => {
+                if( response.data.errorCode === 0 ) {
+                    alert('게시글이 수정되었습니다.');
+                    context.commit('setBoardContentNo', response.data.responseObject.no);
+                    context.dispatch('axiosBoardContent');
+                    context.dispatch('axiosCommentList');
+                }else {
+                    alert(response.data.message);
+                }
+            })
+        },
+        axiosBoardDelete(context) {
+            context.commit('login/setToken', '', { root: true });
+            const token = this.state.login.token;
+            if( token === '' ) {
+                alert('로그인 후 이용해주세요');
+                return ;
+            }
+
+            const url = `/board/remove/${context.state.boardContentNo}?token=${token}`;
+
+            axios.delete(url).then(response => {
+                if( response.data.errorCode === 0 ) {
+                    alert('게시글이 삭제되었습니다.');
+                    context.dispatch('axiosBoardList');
                 } else {
                     alert(response.data.message);
                 }
