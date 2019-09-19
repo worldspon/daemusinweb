@@ -1,7 +1,9 @@
 <template>
     <div class="inquiry">
         <inquiryHeader />
-        <inquiryRegister @createInquiry="createInquiry" />
+        <inquiryRegister v-if="currentView === 'inquiryRegister'" @registerInquiry="registerInquiry" @viewInquiryList="viewInquiryList" />
+        <inquiryList v-if="currentView === 'inquiryList'" @viewInquiryContent="viewInquiryContent" @viewInquiryRegister="viewInquiryRegister" @pageClick="pageClick" @searchStart="searchStart" />
+        <inquiryContent v-if="currentView === 'inquiryContent'" @answerRegister="answerRegister" @answerModify="answerModify" @viewInquiryList="viewInquiryList" @answerDelete="answerDelete" />
     </div>
 </template>
 
@@ -9,22 +11,84 @@
 import {mapState, mapMutations, mapActions} from 'vuex'
 import inquiryHeader from './inquiryHeader.vue';
 import inquiryRegister from './inquiryRegister.vue';
+import inquiryList from './inquiryList.vue';
+import inquiryContent from './inquiryContent.vue';
 
 export default {
     components: {
         inquiryHeader,
-        inquiryRegister
+        inquiryRegister,
+        inquiryList,
+        inquiryContent
+    },
+    computed: {
+        ...mapState('login', [
+            'level'
+        ]),
+        ...mapState('inquiry', [
+            'currentView'
+        ])
     },
     methods: {
+        ...mapMutations('inquiry', [
+            'resetState',
+            'setCurrentView',
+            'setInquiryContentNo'
+        ]),
+        ...mapMutations('pagenation', [
+            'resetPageData'
+        ]),
         ...mapActions('login', [
             'axiosLoginCheck'
         ]),
-        createInquiry(inquiryObject) {
-            console.log(inquiryObject);
+        ...mapActions('inquiry', [
+            'axiosInquiryRegister',
+            'axiosInquiryList',
+            'axiosInquiryContent',
+            'axiosAnswerRegister',
+            'axiosAnswerModify',
+            'axiosAnswerDelete'
+        ]),
+        registerInquiry(inquiryObject) {
+            this.axiosInquiryRegister(inquiryObject);
+        },
+        viewInquiryList() {
+            this.axiosInquiryList();
+        },
+        viewInquiryContent(e) {
+            const contentNo = e.target.parentNode.dataset.no;
+            this.setInquiryContentNo(contentNo);
+            this.axiosInquiryContent();
+        },
+        viewInquiryRegister() {
+            this.setCurrentView('inquiryRegister');
+            this.resetState();
+        },
+        pageClick() {
+            this.axiosInquiryList();
+        },
+        searchStart() {
+            this.resetPageData();
+            this.axiosInquiryList();
+        },
+        answerRegister(answerContent) {
+            this.axiosAnswerRegister(answerContent)
+        },
+        answerModify(patchObject) {
+            this.axiosAnswerModify(patchObject)
+        },
+        answerDelete(no) {
+            if( confirm('정말로 삭제하시겠습니까?') ) {
+                this.axiosAnswerDelete(no);
+            }
         }
     },
     created() {
-        this.axiosLoginCheck();
+        this.resetState();
+        if( this.level ) {
+            this.axiosInquiryList();
+        }
+
     },
 }
 </script>

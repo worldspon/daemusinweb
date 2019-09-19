@@ -2,12 +2,12 @@
     <div class="inquiry__register">
         <div class="input-wrap">
             <label for="phone">휴대폰기종</label>
-            <input id="phone" type="text" v-model="phone">
+            <input id="phone" type="text" v-model="phone" maxlength="20">
         </div>
 
         <div class="input-wrap">
             <label for="title">제목</label>
-            <input id="title" type="text" v-model="title">
+            <input id="title" type="text" v-model="title" maxlength="200">
         </div>
 
         <div class="input-wrap">
@@ -16,8 +16,8 @@
         </div>
 
         <div class="button-box">
-            <button>내문의보기</button>
-            <button @click="createInquiry">문의하기</button>
+            <button @click="viewInquiryList">내문의보기</button>
+            <button @click="registerInquiry">문의하기</button>
         </div>
     </div>
 </template>
@@ -32,7 +32,7 @@ export default {
         }
     },
     methods: {
-        createInquiry() {
+        registerInquiry() {
             const inquiryObject = {
                 contact: {
                     question: {
@@ -42,7 +42,10 @@ export default {
                     }
 	            }
             }
-            this.$emit('createInquiry', inquiryObject);
+            this.$emit('registerInquiry', inquiryObject);
+        },
+        viewInquiryList() {
+            this.$emit('viewInquiryList');
         }
     }
 }

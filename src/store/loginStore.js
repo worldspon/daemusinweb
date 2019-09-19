@@ -70,12 +70,18 @@ export default {
         axiosLogout(context) {
             const url = `/logout`;
 
+            const slashIndex = location.href.lastIndexOf('/');
+            const nowLocation = location.href.slice(slashIndex+1 );
+
             axios.get(url).then(response => {
                 const axiosData = response.data;
                 if( axiosData.errorCode === 0 ) {
                     context.commit('setLoginState', false);
                     context.commit('setUserId', '');
                     context.commit('setUserLevel', false);
+                    if(nowLocation === 'inquiry') {
+                        location.href="http://192.168.0.25:8080"
+                    }
                 } else {
                     alert(axiosData.message);
                 }

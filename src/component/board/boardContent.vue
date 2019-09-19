@@ -143,10 +143,6 @@ export default {
         background-color: #9e7e49;
     }
 
-    .modify-button {
-
-    }
-
     .delete-button {
         margin-left: 5px;
     }

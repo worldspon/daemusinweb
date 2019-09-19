@@ -70,7 +70,7 @@ export default {
         viewBoardList() {
             this.axiosBoardList();
         },
-        pageClick(clickPage) {
+        pageClick() {
             this.axiosBoardList();
         },
         commentPageClick() {

@@ -8,6 +8,7 @@ import comment from './commentStore.js';
 import notice from './noticeStore.js';
 import faq from './faqStore.js';
 import board from './boardStore.js';
+import inquiry from './inquiryStore.js';
 
 
 Vue.use(Vuex);
@@ -23,6 +24,7 @@ export default new Vuex.Store({
         search: search,
         notice: notice,
         faq: faq,
-        board: board
+        board: board,
+        inquiry: inquiry
     }
 })
