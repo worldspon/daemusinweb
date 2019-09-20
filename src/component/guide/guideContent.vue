@@ -1,15 +1,15 @@
 <template>
-    <div class="faq__content" v-if="faqContentObject !== null">
+    <div class="guide__content">
         <div class="title">
-            <span>{{faqContentObject.faqTitle}}</span>
+            <span>{{guideContentObject.gameGuideTitle}}</span>
         </div>
         <div class="content">
-            {{faqContentObject.faqContent}}
+            {{guideContentObject.gameGuideContent}}
         </div>
         <div class="button-box">
             <button class="modify-button" v-if="level">수정</button>
             <button class="delete-button" v-if="level">삭제</button>
-            <button class="list-button" @click="viewFaqList">목록</button>
+            <button class="list-button" @click="viewGuideList">목록</button>
         </div>
     </div>
 </template>
@@ -20,21 +20,21 @@ import { mapState, mapActions, mapMutations } from 'vuex';
 export default {
     computed: {
         ...mapState('login', [ 'level' ]),
-        ...mapState('faq', ['faqContentObject'])
+        ...mapState('guide', ['guideContentObject'])
     },
     methods: {
-        ...mapMutations('faq', [
+        ...mapMutations('guide', [
             'setCurrentView'
         ]),
-        viewFaqList() {
-            this.setCurrentView('faqList');
+        viewGuideList() {
+            this.$emit('viewGuideList');
         }
     }
 }
 </script>
 
 <style scoped>
-    .faq__content {
+    .guide__content {
         width: 100%;
         padding: 30px;
         background-color: #fff;

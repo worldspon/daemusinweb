@@ -2,7 +2,7 @@ import main from './component/main/main.vue';
 import notice from './component/notice/notice.vue';
 import faq from './component/faq/faq.vue';
 import inquiry from './component/inquiry/inquiry.vue';
-import guide from './component/guide.vue';
+import guide from './component/guide/guide.vue';
 import board from './component/board/board.vue';
 
 export default [

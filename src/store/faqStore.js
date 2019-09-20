@@ -32,7 +32,7 @@ export default {
     },
     actions: {
         axiosFaqList(context) {
-            const url = `http://211.192.165.100:3030/faq/list/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
+            const url = `/faq/list/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
         
             axios.get(url).then(response => {
                 context.commit('setListArray', response.data.responseObject.faq);
@@ -42,7 +42,7 @@ export default {
         },
         axiosFaqContent(context) {
             
-            const url = `http://211.192.165.100:3030/faq/read/${this.state.faq.faqContentNo}`;
+            const url = `/faq/read/${this.state.faq.faqContentNo}`;
         
             axios.get(url).then(response => {
                 context.commit('setFaqContentObject', response.data.responseObject.faq);
