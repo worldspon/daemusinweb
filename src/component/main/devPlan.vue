@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         axiosDevPlan() {
-            const url = `http://211.192.165.100:3030/main/developmentPlan`;
+            const url = `/api/main/developmentPlan`;
         
             this.$http.get(url).then(response => {
                 this.devPlan = response.data.responseObject.developmentPlan;

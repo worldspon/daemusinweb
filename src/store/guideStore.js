@@ -30,7 +30,7 @@ export default {
     },
     actions: {
         axiosGuideList(context) {
-            const url = `/gameGuide/list/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
+            const url = `/api/gameGuide/list/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
 
             axios.get(url).then(response => {
                 context.commit('setListArray', response.data.responseObject.gameGuide);
@@ -40,7 +40,7 @@ export default {
         },
         axiosGuideContent(context) {
             
-            const url = `/gameGuide/read/${this.state.guide.guideContentNo}`;
+            const url = `/api/gameGuide/read/${this.state.guide.guideContentNo}`;
         
             axios.get(url).then(response => {
                 context.commit('setGuideContentObject', response.data.responseObject.gameGuide);

@@ -39,7 +39,7 @@ export default {
                 return ;
             }
 
-            const url = `/contact/question/create?token=${token}`
+            const url = `/api/contact/question/create?token=${token}`
 
             axios.post(url, inquriyObject).then(response => {
                 if( response.data.errorCode === 0 ) {
@@ -60,7 +60,7 @@ export default {
             }
 
 
-            const url = `/contact/list/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}?token=${token}`
+            const url = `/api/contact/list/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}?token=${token}`
 
             axios.get(url).then(response => {
                 if( response.data.errorCode === 0 ) {
@@ -80,7 +80,7 @@ export default {
                 return ;
             }
 
-            const url = `/contact/read/${this.state.inquiry.inquiryContentNo}?token=${token}`;
+            const url = `/api/contact/read/${this.state.inquiry.inquiryContentNo}?token=${token}`;
 
             axios.get(url).then(response => {
                 if( response.data.errorCode === 0 ) {
@@ -99,7 +99,7 @@ export default {
                 return ;
             }
 
-            const url = `/contact/answer/create?token=${token}`;
+            const url = `/api/contact/answer/create?token=${token}`;
 
             const postObject = {
                 contact: {
@@ -129,7 +129,7 @@ export default {
                 return ;
             }
 
-            const url = `/contact/answer/modify/${patchObject.no}?token=${token}`;
+            const url = `/api/contact/answer/modify/${patchObject.no}?token=${token}`;
 
             const sendObject = {
                 contact: {
@@ -159,7 +159,7 @@ export default {
                 alert('로그인 후 이용해주세요');
                 return ;
             }
-            const url = `/contact/answer/remove/${answerNo}?token=${token}`;
+            const url = `/api/contact/answer/remove/${answerNo}?token=${token}`;
 
             axios.delete(url).then(response => {
                 if( response.data.errorCode === 0 ) {

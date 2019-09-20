@@ -25,7 +25,7 @@ export default {
         }
     },
     created() {
-        const url = `http://211.192.165.100:3030/main/${this.type}`;
+        const url = `/api/main/${this.type}`;
         
         this.$http.get(url).then(response => {
             this.resultData = response.data.responseObject[`${this.type}`];

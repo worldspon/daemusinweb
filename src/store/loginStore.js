@@ -27,7 +27,7 @@ export default {
     },
     actions: {
         axiosLoginCheck(context) {
-            const url = `/token/verify`;
+            const url = `/api/token/verify`;
         
             axios.get(url).then(response => {
                 const axiosObject = response.data;
@@ -52,8 +52,9 @@ export default {
                     password : userObject.password
                 }
             }
-            axios.post('/login', userData)
+            axios.post('/api/login', userData)
             .then(response => {
+                console.log(response);
                 const axiosData = response.data;
                 if( axiosData.errorCode === 0 ) {
                     context.commit('setLoginState', true);
@@ -68,7 +69,7 @@ export default {
             })
         },
         axiosLogout(context) {
-            const url = `/logout`;
+            const url = `/api/logout`;
 
             const slashIndex = location.href.lastIndexOf('/');
             const nowLocation = location.href.slice(slashIndex+1 );
@@ -80,7 +81,7 @@ export default {
                     context.commit('setUserId', '');
                     context.commit('setUserLevel', false);
                     if(nowLocation === 'inquiry') {
-                        location.href="http://192.168.0.25:8080"
+                        location.href="http://192.168.0.25:8080/"
                     }
                 } else {
                     alert(axiosData.message);

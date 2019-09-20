@@ -42,7 +42,7 @@ export default {
     },
     actions: {
         axiosNoticeList(context) {
-            const url = `/notice/list/${this.state.notice.category}/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
+            const url = `/api/notice/list/${this.state.notice.category}/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
         
             axios.get(url).then(response => {
                 context.commit('setListArray', response.data.responseObject.notice);
@@ -51,7 +51,7 @@ export default {
             })
         },
         axiosNoticeContent(context) {
-            const url = `/notice/read/${this.state.notice.noticeContentNo}`;
+            const url = `/api/notice/read/${this.state.notice.noticeContentNo}`;
         
             axios.get(url).then(response => {
                 context.commit('setNoticeContentObject', response.data.responseObject.notice);
@@ -60,7 +60,7 @@ export default {
             })
         },
         axiosCommentList(context) {
-            const url = `/notice/${this.state.notice.noticeContentNo}/comment/${this.state.commentPagenation.pageNum - 1}`;
+            const url = `/api/notice/${this.state.notice.noticeContentNo}/comment/${this.state.commentPagenation.pageNum - 1}`;
         
             axios.get(url).then(response => {
                 context.commit('comment/setCommentObject', response.data.responseObject.comment, { root: true });
@@ -82,7 +82,7 @@ export default {
                     content: this.state.comment.commentContent
                 }
             }
-            const url = `/notice/comment/create?token=${token}`;
+            const url = `/api/notice/comment/create?token=${token}`;
 
             axios.post(url, postObject).then(response => {
                 if( response.data.errorCode === 0 ) {
@@ -99,7 +99,7 @@ export default {
             context.commit('login/setToken', '', { root: true });
             const token = this.state.login.token;
 
-            const url = `/notice/comment/modify/${commentNo}?token=${token}`;
+            const url = `/api/notice/comment/modify/${commentNo}?token=${token}`;
 
             const patchObject = {
                 notice: {
@@ -126,7 +126,7 @@ export default {
             context.commit('login/setToken', '', { root: true });
             const token = this.state.login.token;
 
-            const url = `/notice/${context.state.noticeContentNo}/comment/remove/${no}?token=${token}`;
+            const url = `/api/notice/${context.state.noticeContentNo}/comment/remove/${no}?token=${token}`;
 
             axios.delete(url).then(response => {
                 if( response.data.errorCode === 0 ) {

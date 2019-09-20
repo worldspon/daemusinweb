@@ -36,7 +36,7 @@ export default {
     },
     actions: {
         axiosBoardList(context) {
-            const url = `/board/list/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
+            const url = `/api/board/list/${this.state.pagenation.pageNum - 1}/${encodeURI(this.state.search.searchKeyword)}`;
         
             axios.get(url).then(response => {
                 context.commit('setListArray', response.data.responseObject.board);
@@ -45,7 +45,7 @@ export default {
             })
         },
         axiosBoardContent(context) {
-            const url = `/board/read/${this.state.board.boardContentNo}`;
+            const url = `/api/board/read/${this.state.board.boardContentNo}`;
         
             axios.get(url).then(response => {
                 context.commit('setBoardContentObject', response.data.responseObject.board);
@@ -54,7 +54,7 @@ export default {
             })
         },
         axiosCommentList(context) {
-            const url = `/board/read/${this.state.board.boardContentNo}/comment/${this.state.commentPagenation.pageNum - 1}`;
+            const url = `/api/board/read/${this.state.board.boardContentNo}/comment/${this.state.commentPagenation.pageNum - 1}`;
         
             axios.get(url).then(response => {
                 context.commit('comment/setCommentObject', response.data.responseObject.comment, { root: true });
@@ -76,7 +76,7 @@ export default {
                     content: this.state.comment.commentContent
                 }
             }
-            const url = `/board/comment/create?token=${token}`;
+            const url = `/api/board/comment/create?token=${token}`;
 
             axios.post(url, postObject).then(response => {
                 if( response.data.errorCode === 0 ) {
@@ -97,7 +97,7 @@ export default {
                 return ;
             }
 
-            const url = `/board/comment/modify/${commentNo}?token=${token}`;
+            const url = `/api/board/comment/modify/${commentNo}?token=${token}`;
 
             const patchObject = {
                 board: {
@@ -128,7 +128,7 @@ export default {
                 return ;
             }
 
-            const url = `/board/${context.state.boardContentNo}/comment/remove/${no}?token=${token}`;
+            const url = `/api/board/${context.state.boardContentNo}/comment/remove/${no}?token=${token}`;
 
             axios.delete(url).then(response => {
                 if( response.data.errorCode === 0 ) {
@@ -147,7 +147,7 @@ export default {
                 alert('로그인 후 이용해주세요');
                 return ;
             }
-            const url = `/board/create?token=${token}`;
+            const url = `/api/board/create?token=${token}`;
 
             axios.post(url, writeObject).then(response => {
                 if( response.data.errorCode === 0 ) {
@@ -168,7 +168,7 @@ export default {
                 return ;
             }
 
-            const url = `/board/modify/${context.state.boardContentNo}?token=${token}`;
+            const url = `/api/board/modify/${context.state.boardContentNo}?token=${token}`;
 
             axios.patch(url, modifyObject).then(response => {
                 if( response.data.errorCode === 0 ) {
@@ -189,7 +189,7 @@ export default {
                 return ;
             }
 
-            const url = `/board/remove/${context.state.boardContentNo}?token=${token}`;
+            const url = `/api/board/remove/${context.state.boardContentNo}?token=${token}`;
 
             axios.delete(url).then(response => {
                 if( response.data.errorCode === 0 ) {
