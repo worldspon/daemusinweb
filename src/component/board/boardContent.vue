@@ -18,7 +18,7 @@
         <div class="content">{{boardContentObject.boardContent}}</div>
         <div class="button-box">
             <button class="modify-button" v-if="boardContentObject.writtenBy === userId" @click="viewBoardForm">수정</button>
-            <button class="delete-button" v-if="boardContentObject.writtenBy === userId" @click="deleteContent">삭제</button>
+            <button class="delete-button" v-if="boardContentObject.writtenBy === userId || level" @click="deleteContent">삭제</button>
             <button class="list-button" @click="viewBoardList">목록</button>
         </div>
         <inputComment type="register" @createComment="createComment" />
@@ -41,7 +41,7 @@ export default {
     },
     computed: {
         ...mapState('board', ['boardContentObject']),
-        ...mapState('login', ['userId']),
+        ...mapState('login', ['userId', 'level']),
         ...mapState('commentPagenation', ['totalPosts'])
     },
     methods: {

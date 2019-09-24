@@ -86,6 +86,9 @@ export default {
         padding-bottom: 20px;
         border-bottom: 2px solid #aaa;
     }
+    .title-writer {
+        word-break: break-all;
+    }
 
     .device-date {
         text-align: right;
@@ -148,5 +151,21 @@ export default {
         border-radius: 3px;
         color: white;
         background-color: #9e7e49;
+    }
+
+    @media (max-width: 834px) {
+        /* Device = Tablets */
+        .notice-box, .board-box {
+            width: 100%;
+
+        }
+
+        .notice-box {
+            margin-bottom: 30px;
+        }
+
+        .row:not(:last-child) {
+            margin-bottom: 30px; 
+        }
     }
 </style>

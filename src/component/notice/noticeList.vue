@@ -11,7 +11,9 @@
             </div>
             <span class="date">{{post.date}}</span>
         </div>
-        <div class="button-box" v-if="level"><button class="write-button">글쓰기</button></div>
+        <div class="button-box" v-if="level">
+            <button class="write-button" @click="viewNoticeForm">글쓰기</button>
+        </div>
 
         <pagenation @pageClick="pageClick"></pagenation>
         <searchComponent @searchStart="searchStart"></searchComponent>
@@ -38,6 +40,9 @@ export default {
         },
         pageClick() {
             this.$emit('pageClick');
+        },
+        viewNoticeForm() {
+            this.$emit('viewNoticeForm', 'create');
         },
         searchStart() {
             this.$emit('searchStart');

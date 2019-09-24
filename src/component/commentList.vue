@@ -8,10 +8,13 @@
                     <button v-if="modifyTarget !== comment.no" class="comment-modify" :data-no="comment.no" @click="startModify">수정</button>
                     <button class="comment-delete" :data-no="comment.no" @click="deleteComment">삭제</button>
                 </div>
+                <div class="button-box" v-else-if="level">
+                    <button class="comment-delete" :data-no="comment.no" @click="deleteComment">삭제</button>
+                </div>
             </div>
             <span class="comment-date">({{comment.date}})</span>
             <p class="comment-content">{{comment.comment}}</p>
-            <inputComment v-if="modifyTarget === comment.no" type="modify" @modifyComment="modifyComment"/>
+            <inputComment v-if="modifyTarget === comment.no" type="modify" :content="comment.comment" @modifyComment="modifyComment"/>
         </div>
     </div>
 </template>
@@ -29,7 +32,7 @@ export default {
             'commentObject',
             'modifyTarget'
         ]),
-        ...mapState('login', ['userId'])
+        ...mapState('login', ['userId', 'level'])
     },
     methods: {
         ...mapMutations('comment', [

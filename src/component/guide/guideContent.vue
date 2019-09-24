@@ -3,12 +3,10 @@
         <div class="title">
             <span>{{guideContentObject.gameGuideTitle}}</span>
         </div>
-        <div class="content">
-            {{guideContentObject.gameGuideContent}}
-        </div>
+        <div class="content">{{guideContentObject.gameGuideContent}}</div>
         <div class="button-box">
-            <button class="modify-button" v-if="level">수정</button>
-            <button class="delete-button" v-if="level">삭제</button>
+            <button class="modify-button" v-if="level" @click="viewGuideForm">수정</button>
+            <button class="delete-button" v-if="level" @click="deleteGuide">삭제</button>
             <button class="list-button" @click="viewGuideList">목록</button>
         </div>
     </div>
@@ -23,11 +21,14 @@ export default {
         ...mapState('guide', ['guideContentObject'])
     },
     methods: {
-        ...mapMutations('guide', [
-            'setCurrentView'
-        ]),
+        viewGuideForm() {
+            this.$emit('viewGuideForm', 'modify');
+        },
         viewGuideList() {
             this.$emit('viewGuideList');
+        },
+        deleteGuide() {
+            this.$emit('deleteGuide');
         }
     }
 }
@@ -50,7 +51,7 @@ export default {
     }
 
     .content {
-        white-space: pre-line;
+        white-space: pre-wrap;
         font-size: 1.5rem;
         margin-bottom: 10px;
         padding-bottom: 150px;

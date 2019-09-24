@@ -7,7 +7,8 @@ export default {
         category : 'all',
         listArray: [],
         noticeContentNo: null,
-        noticeContentObject: null
+        noticeContentObject: null,
+        formType: ''
     },
     mutations: {
         resetState(state) {
@@ -29,6 +30,9 @@ export default {
         },
         setListArray(state, listArray) {
             state.listArray = listArray;
+        },
+        setFormType(state, type) {
+            state.formType = type;
         },
         setNoticeContentNo(state, no) {
             state.noticeContentNo = parseInt(no);
@@ -57,6 +61,66 @@ export default {
                 context.commit('setNoticeContentObject', response.data.responseObject.notice);
                 context.commit('commentPagenation/setTotalPosts',response.data.responseObject.totalComments, { root: true });
                 context.commit('setCurrentView', 'noticeContent');
+            })
+        },
+        axiosNoticeWrite(context, writeObject) {
+            context.commit('login/setToken', '', { root: true });
+            const token = this.state.login.token;
+            if( token === '' ) {
+                alert('로그인 후 이용해주세요');
+                return ;
+            }
+            const url = `/api/notice/write?token=${token}`;
+
+            axios.post(url, writeObject).then(response => {
+                if( response.data.errorCode === 0 ) {
+                    alert('게시글이 작성되었습니다.');
+                    context.commit('setNoticeContentNo', response.data.responseObject.no);
+                    context.dispatch('axiosNoticeContent');
+                    context.dispatch('axiosCommentList');
+                }else {
+                    alert(response.data.message);
+                }
+            })
+        },
+        axiosNoticeModify(context, modifyObject) {
+            context.commit('login/setToken', '', { root: true });
+            const token = this.state.login.token;
+            if( token === '' ) {
+                alert('로그인 후 이용해주세요');
+                return ;
+            }
+
+            const url = `/api/notice/modify/${context.state.noticeContentNo}?token=${token}`;
+
+            axios.patch(url, modifyObject).then(response => {
+                if( response.data.errorCode === 0 ) {
+                    alert('게시글이 수정되었습니다.');
+                    context.commit('setNoticeContentNo', response.data.responseObject.no);
+                    context.dispatch('axiosNoticeContent');
+                    context.dispatch('axiosCommentList');
+                }else {
+                    alert(response.data.message);
+                }
+            })
+        },
+        axiosNoticeDelete(context) {
+            context.commit('login/setToken', '', { root: true });
+            const token = this.state.login.token;
+            if( token === '' ) {
+                alert('로그인 후 이용해주세요');
+                return ;
+            }
+
+            const url = `/api/notice/remove/${context.state.noticeContentNo}?token=${token}`;
+
+            axios.delete(url).then(response => {
+                if( response.data.errorCode === 0 ) {
+                    alert('게시글이 삭제되었습니다.');
+                    context.dispatch('axiosNoticeList');
+                } else {
+                    alert(response.data.message);
+                }
             })
         },
         axiosCommentList(context) {

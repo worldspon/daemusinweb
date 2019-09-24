@@ -1,8 +1,9 @@
 <template>
     <div class="notice">
         <noticeHeader @categoryClick="categoryClick"></noticeHeader>
-        <noticeList v-if="currentView === 'noticeList'" @pageClick="pageClick" @searchStart="searchStart" @viewNoticeContent="viewNoticeContent"></noticeList>
-        <noticeContent v-if="currentView === 'noticeContent'" @viewNoticeList="viewNoticeList" @createComment="createComment" @modifyComment="modifyComment" @deleteComment="deleteComment" @commentPageClick="commentPageClick"></noticeContent>
+        <noticeList v-if="currentView === 'noticeList'" @pageClick="pageClick" @searchStart="searchStart" @viewNoticeContent="viewNoticeContent" @viewNoticeForm="viewNoticeForm"></noticeList>
+        <noticeContent v-if="currentView === 'noticeContent'" @viewNoticeList="viewNoticeList" @viewNoticeForm="viewNoticeForm" @deleteContent="deleteContent" @createComment="createComment" @modifyComment="modifyComment" @deleteComment="deleteComment" @commentPageClick="commentPageClick"></noticeContent>
+        <noticeForm v-if="currentView === 'noticeForm'" @viewNoticeList="viewNoticeList" @writeNotice="writeNotice" @modifyNotice="modifyNotice"/>
     </div>
 </template>
 
@@ -10,13 +11,15 @@
 import noticeHeader from './noticeHeader.vue';
 import noticeList from './noticeList.vue';
 import noticeContent from './noticeContent.vue';
+import noticeForm from './noticeForm.vue';
 import {mapState, mapMutations, mapActions} from 'vuex';
 
 export default {
     components: {
         noticeHeader,
         noticeList,
-        noticeContent
+        noticeContent,
+        noticeForm
     },
     computed: {
         ...mapState('notice', ['currentView', 'category']),
@@ -30,7 +33,9 @@ export default {
         ...mapMutations('notice', [
             'resetState',
             'setCategory',
-            'setNoticeContentNo'
+            'setCurrentView',
+            'setNoticeContentNo',
+            'setFormType'
         ]),
         ...mapMutations('comment', [
             'setCommentContent'
@@ -47,6 +52,9 @@ export default {
         ...mapActions('notice', [
             'axiosNoticeList',
             'axiosNoticeContent',
+            'axiosNoticeWrite',
+            'axiosNoticeModify',
+            'axiosNoticeDelete',
             'axiosCommentList',
             'axiosNoticeCommentCreate',
             'axiosNoticeCommentModify',
@@ -62,9 +70,22 @@ export default {
         viewNoticeList() {
             this.axiosNoticeList();
         },
+        viewNoticeForm(type) {
+            this.setFormType(type);
+            this.setCurrentView('noticeForm');
+        },
         categoryClick(newCategory) {
             this.setCategory(newCategory);
             this.axiosNoticeList();
+        },
+        writeNotice(writeObject) {
+            this.axiosNoticeWrite(writeObject);
+        },
+        modifyNotice(modifyObject) {
+            confirm('정말로 수정하시겠습니까?') ? this.axiosNoticeModify(modifyObject) : '';
+        },
+        deleteContent() {
+            confirm('정말로 삭제하시겠습니까?') ? this.axiosNoticeDelete() : '';
         },
         createComment(comment) {
             this.setCommentContent(comment);

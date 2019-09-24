@@ -15,7 +15,7 @@
                         <img class="footer__app" src="../assets/image/app-icon-worldspon.png" alt="">
                     </a>
                     <a href="https://play.google.com/store/apps/details?id=com.worldspon.minigames" target="_blank">
-                        <img class="footer__app" src="../assets/image/app-icon-minigames.png" alt="">
+                        <img class="footer__app" src="../assets/image/app-icon-cocogames.png" alt="">
                     </a>
                     <a href="https://play.google.com/store/apps/details?id=com.worldspon.newbigking" target="_blank">
                         <img class="footer__app" src="../assets/image/app-icon-daemusin.png" alt="">

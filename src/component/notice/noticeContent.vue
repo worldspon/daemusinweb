@@ -9,8 +9,8 @@
         </div>
         <div class="content">{{noticeContentObject.noticeContent}}</div>
         <div class="button-box">
-            <button class="modify-button" v-if="level">수정</button>
-            <button class="delete-button" v-if="level">삭제</button>
+            <button class="modify-button" v-if="level" @click="viewNoticeForm">수정</button>
+            <button class="delete-button" v-if="level" @click="deleteContent">삭제</button>
             <button class="list-button" @click="viewNoticeList">목록</button>
         </div>
         <inputComment type="register" @createComment="createComment" />
@@ -42,14 +42,20 @@ export default {
         viewNoticeList() {
             this.$emit('viewNoticeList');
         },
+        viewNoticeForm() {
+            this.$emit('viewNoticeForm', 'modify');
+        },
+        deleteContent() {
+            this.$emit('deleteContent');
+        },
         createComment(comment) {
             this.$emit('createComment', comment);
         },
         modifyComment(comment, modifyTarget) {
             this.$emit('modifyComment', comment, modifyTarget);
         },
-        deleteComment(no) {
-            this.$emit('deleteComment', no);
+        deleteComment() {
+            this.$emit('deleteComment');
         },
         commentPageClick() {
             this.$emit('commentPageClick');

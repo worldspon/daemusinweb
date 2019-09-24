@@ -1,8 +1,9 @@
 <template>
     <div class="guide">
         <guideHeader />
-        <guideList v-if="currentView === 'guideList'" @viewGuideContent="viewGuideContent" @pageClick="pageClick" @searchStart="searchStart" />
-        <guideContent v-if="currentView === 'guideContent'" @viewGuideList="viewGuideList" />
+        <guideList v-if="currentView === 'guideList'" @viewGuideContent="viewGuideContent" @viewGuideForm="viewGuideForm" @pageClick="pageClick" @searchStart="searchStart" />
+        <guideContent v-if="currentView === 'guideContent'" @viewGuideList="viewGuideList" @viewGuideForm="viewGuideForm" @deleteGuide="deleteGuide"/>
+        <guideForm v-if="currentView === 'guideForm'" @viewGuideList="viewGuideList" @writeGuide="writeGuide" @modifyGuide="modifyGuide" />
     </div>
 </template>
 
@@ -11,12 +12,14 @@ import {mapState, mapMutations, mapActions} from 'vuex'
 import guideHeader from './guideHeader.vue';
 import guideList from './guideList.vue';
 import guideContent from './guideContent.vue';
+import guideForm from './guideForm.vue';
 
 export default {
     components: {
         guideHeader,
         guideList,
-        guideContent
+        guideContent,
+        guideForm
     },
     computed: {
         ...mapState('guide', [
@@ -27,7 +30,8 @@ export default {
         ...mapMutations('guide', [
             'resetState',
             'setCurrentView',
-            'setGuideContentNo'
+            'setGuideContentNo',
+            'setFormType'
         ]),
         ...mapMutations('pagenation', [
             'resetPageData'
@@ -40,11 +44,18 @@ export default {
         ]),
         ...mapActions('guide', [
             'axiosGuideList',
-            'axiosGuideContent'
+            'axiosGuideContent',
+            'axiosGuideWrite',
+            'axiosGuideModify',
+            'axiosGuideDelete'
         ]),
         viewGuideContent(contentNo) {
             this.setGuideContentNo(contentNo);
             this.axiosGuideContent();
+        },
+        viewGuideForm(type) {
+            this.setFormType(type);
+            this.setCurrentView('guideForm');
         },
         pageClick() {
             this.axiosGuideList();
@@ -55,6 +66,15 @@ export default {
         },
         viewGuideList() {
             this.axiosGuideList();
+        },
+        writeGuide(writeObject) {
+            this.axiosGuideWrite(writeObject);
+        },
+        modifyGuide(modifyObject) {
+            this.axiosGuideModify(modifyObject);
+        },
+        deleteGuide() {
+            confirm('정말로 삭제하시겠습니까?') ? this.axiosGuideDelete() : '';
         }
     },
     created() {

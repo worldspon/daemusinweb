@@ -3,12 +3,10 @@
         <div class="title">
             <span>{{faqContentObject.faqTitle}}</span>
         </div>
-        <div class="content">
-            {{faqContentObject.faqContent}}
-        </div>
+        <div class="content">{{faqContentObject.faqContent}}</div>
         <div class="button-box">
-            <button class="modify-button" v-if="level">수정</button>
-            <button class="delete-button" v-if="level">삭제</button>
+            <button class="modify-button" v-if="level" @click="viewFaqForm">수정</button>
+            <button class="delete-button" v-if="level" @click="deleteFaq">삭제</button>
             <button class="list-button" @click="viewFaqList">목록</button>
         </div>
     </div>
@@ -23,12 +21,15 @@ export default {
         ...mapState('faq', ['faqContentObject'])
     },
     methods: {
-        ...mapMutations('faq', [
-            'setCurrentView'
-        ]),
+        viewFaqForm() {
+            this.$emit('viewFaqForm', 'modify');
+        },
         viewFaqList() {
-            this.setCurrentView('faqList');
-        }
+            this.$emit('viewFaqList');
+        },
+        deleteFaq() {
+            this.$emit('deleteFaq');
+        },
     }
 }
 </script>
@@ -50,7 +51,7 @@ export default {
     }
 
     .content {
-        white-space: pre-line;
+        white-space: pre-wrap;
         font-size: 1.5rem;
         margin-bottom: 10px;
         padding-bottom: 150px;

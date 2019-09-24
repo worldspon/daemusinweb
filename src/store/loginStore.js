@@ -28,6 +28,11 @@ export default {
     actions: {
         axiosLoginCheck(context) {
             const url = `/api/token/verify`;
+
+            context.commit('setToken');
+            if( context.state.token === '' ) {
+                return ;
+            }
         
             axios.get(url).then(response => {
                 const axiosObject = response.data;
@@ -54,7 +59,6 @@ export default {
             }
             axios.post('/api/login', userData)
             .then(response => {
-                console.log(response);
                 const axiosData = response.data;
                 if( axiosData.errorCode === 0 ) {
                     context.commit('setLoginState', true);
@@ -62,6 +66,11 @@ export default {
                     context.commit('setUserLevel', axiosData.responseObject.level);
                 } else if( axiosData.errorCode === 1 ) {
                     alert(axiosData.message);
+                    document.cookie = 'taemuuser=; expires=Thu, 01 Jan 1999 00:00:10 GMT;'
+                    context.commit('setLoginState', false);
+                    context.commit('setUserId', '');
+                    context.commit('setUserLevel', false);
+                    context.commit('setToken', null);
                     location.reload();
                 } else {
                     alert(axiosData.message);
@@ -81,7 +90,7 @@ export default {
                     context.commit('setUserId', '');
                     context.commit('setUserLevel', false);
                     if(nowLocation === 'inquiry') {
-                        location.href="http://192.168.0.25:8080/"
+                        location.href = "http://taemuking.com/";
                     }
                 } else {
                     alert(axiosData.message);

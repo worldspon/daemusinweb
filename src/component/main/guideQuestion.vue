@@ -16,7 +16,7 @@
                 </div>
             </div>
         </router-link>
-        <router-link to="inquery">
+        <router-link to="inquiry">
             <div class="question">
                 <img src="../../assets/image/question-background.png" alt="">
                 <div class="text-area">

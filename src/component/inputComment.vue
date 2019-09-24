@@ -2,7 +2,7 @@
     <div class="comment">
         <div class="comment__user">
             <span>{{userId === '' ? '로그인해주세요' : userId}}</span>
-            <span>( {{comment.length}} / 500 )</span>
+            <span>( {{comment === undefined ? 0 : comment.length}} / 500 )</span>
         </div>
         <textarea class="comment__textarea" placeholder="내용을 입력해주세요." maxlength="500" v-model="comment"></textarea>
         <div class="button-box">
@@ -16,11 +16,12 @@ import {mapState, mapMutations, mapActions} from 'vuex';
 
 export default {
     props: [
-        'type'
+        'type',
+        'content'
     ],
     data() {
         return {
-            comment: ''
+            comment: this.content
         }
     },
     computed: {

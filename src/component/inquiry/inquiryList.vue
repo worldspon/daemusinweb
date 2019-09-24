@@ -87,6 +87,8 @@ export default {
         border-bottom: 1px solid #aaa;
     }
     .row__title-box {
+                width: calc(100% - (270px));
+        word-break: break-all;
         font-size: 1.5rem;
         font-weight: bold;
         cursor: pointer;

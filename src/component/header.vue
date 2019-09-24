@@ -20,11 +20,26 @@
         <nav class="header__nav">
             <img src="../assets/image/logo.png" alt="logo" class="logo" @click="moveHome">
             <ul class="header__menu" v-if="windowWidth >= 1366">
-                <li><router-link to="/notice">공지사항</router-link></li>
-                <li><router-link to="/faq">FAQ</router-link></li>
-                <li><router-link to="/inquiry">1:1문의</router-link></li>
-                <li><router-link to="/guide">게임가이드</router-link></li>
-                <li><router-link to="/board">게시판</router-link></li>
+                <li>
+                    <router-link v-if="$route.path !== '/notice'" to="/notice">공지사항</router-link>
+                    <a v-else @click="reload">공지사항</a>
+                </li>
+                <li>
+                    <router-link v-if="$route.path !== '/faq'" to="/faq">FAQ</router-link>
+                    <a v-else @click="reload">FAQ</a>
+                </li>
+                <li>
+                    <router-link v-if="$route.path !== '/inquiry'" to="/inquiry">1:1문의</router-link>
+                    <a v-else @click="reload">1:1문의</a>
+                </li>
+                <li>
+                    <router-link v-if="$route.path !== '/guide'" to="/guide">게임가이드</router-link>
+                    <a v-else @click="reload">게임가이드</a>
+                </li>
+                <li>
+                    <router-link v-if="$route.path !== '/board'" to="/board">게시판</router-link>
+                    <a v-else @click="reload">게시판</a>
+                </li>
             </ul>
             <div class="login-box" v-if="windowWidth >= 1366">
                 <span class="login" @click="showLoginModal" v-if="!loginState">로그인</span>
@@ -36,11 +51,26 @@
                 <ul class="mobile-menu-nav">
                     <li @click="showLoginModal" v-if="!loginState">로그인</li>
                     <li @click="axiosLogout" v-if="loginState">로그아웃</li>
-                    <li @click="mobileMenuClick"><router-link to="/notice">공지사항</router-link></li>
-                    <li @click="mobileMenuClick"><router-link to="/faq">FAQ</router-link></li>
-                    <li @click="mobileMenuClick"><router-link to="/inquiry">1:1문의</router-link></li>
-                    <li @click="mobileMenuClick"><router-link to="/guide">게임가이드</router-link></li>
-                    <li @click="mobileMenuClick"><router-link to="/board">게시판</router-link></li>
+                    <li @click="mobileMenuClick">
+                        <router-link v-if="$route.path !== '/notice'" to="/notice">공지사항</router-link>
+                        <a v-else @click="reload">공지사항</a>
+                    </li>
+                    <li @click="mobileMenuClick">
+                        <router-link v-if="$route.path !== '/faq'" to="/faq">FAQ</router-link>
+                        <a v-else @click="reload">FAQ</a>
+                    </li>
+                    <li @click="mobileMenuClick">
+                        <router-link  v-if="$route.path !== '/inquiry'" to="/inquiry">1:1문의</router-link>
+                        <a v-else @click="reload">1:1문의</a>
+                    </li>
+                    <li @click="mobileMenuClick">
+                        <router-link v-if="$route.path !== '/guide'" to="/guide">게임가이드</router-link>
+                        <a v-else @click="reload">게임가이드</a>
+                    </li>
+                    <li @click="mobileMenuClick">
+                        <router-link v-if="$route.path !== '/board'" to="/board">게시판</router-link>
+                        <a v-else @click="reload">게시판</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -66,6 +96,9 @@ export default {
         ])
     },
     methods: {
+        reload() {
+            location.reload();
+        },
         ...mapMutations('login', [
             'setUserId',
             'setUserPassword'
@@ -76,7 +109,7 @@ export default {
             'axiosLoginCheck'
         ]),
         moveHome() {
-            location.href = 'http://192.168.0.25:8080';
+            location.href = 'http://taemuking.com/';
         },
         onResize() {
             this.windowWidth = window.innerWidth;
@@ -186,6 +219,7 @@ export default {
     }
 
     a {
+        cursor: pointer;
         color: white;
     }
 

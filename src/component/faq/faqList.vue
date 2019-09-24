@@ -5,12 +5,12 @@
             <span class="title" :data-no="post.no" @click="viewFaqContent">Q. {{post.faqTitle}}</span>
         </div>
         <div class="button-box" v-if="level">
-            <button class="write-button">글쓰기</button>
+            <button class="write-button" @click="viewFaqForm">글쓰기</button>
         </div>
         <pagenation @pageClick="pageClick"></pagenation>
         <div class="inquery-router-box">
             <span>만족스러운 답변을 찾지 못하셨나요? 1:1 문의를 통해 직접 질문하세요.</span>
-            <button class="inquery-button"><router-link to="/inquery">1:1 문의</router-link></button>
+            <button class="inquery-button"><router-link to="/inquiry">1:1 문의</router-link></button>
         </div>
     </div>
 </template>
@@ -35,6 +35,9 @@ export default {
         },
         pageClick() {
             this.$emit('pageClick');
+        },
+        viewFaqForm() {
+            this.$emit('viewFaqForm', 'create');
         },
         searchStart() {
             this.$emit('searchStart');
