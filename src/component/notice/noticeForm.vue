@@ -32,7 +32,7 @@ export default {
         return {
             title: '',
             content: '',
-            selected: '공지사항'
+            selected: ''
         }
     },
     methods: {
