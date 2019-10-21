@@ -150,7 +150,11 @@ export default {
             flex-flow: column;
         }
 
-        .writer, .read-count, .date {
+        .read-count {
+            display: none;
+        }
+
+        .writer, .date {
             width: auto;
             margin-top: 5px;
         }
